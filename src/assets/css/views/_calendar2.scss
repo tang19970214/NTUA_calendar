@@ -1,6 +1,9 @@
 #Calendar2 {
+  background: url("../assets/images/background.png");
+  background-repeat: repeat;
   .filterBox {
-    background-color: lighten($color: $colorPrimary, $amount: 68);
+    // background-color: lighten($color: $colorPrimary, $amount: 68);
+    background-color: $colorInput;
     padding: 0px 2rem;
     box-sizing: border-box;
     width: 90%;
