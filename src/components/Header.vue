@@ -2,11 +2,6 @@
   <div id="Header">
     <div class="headerContainer">
       <i @click="setShowMenu" class="fas fa-bars"></i>
-      <img
-        @click="$router.push('/Calendar')"
-        src="../assets/images/logo1.png"
-        alt
-      />
 
       <!-- <div class="btnBox">
         <i :class="{ loginIcon: userName }" class="fas fa-user"></i>
