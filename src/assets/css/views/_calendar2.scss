@@ -13,6 +13,7 @@
     align-items: center;
     height: 80px;
     border-radius: 8px;
+    justify-content: flex-end;
 
     @include rwd($lg) {
       height: calc(100vh - 100px);
@@ -41,7 +42,8 @@
   }
 
   .searchInput {
-    margin-left: auto;
+    // margin-left: auto;
+    margin-left: 1rem;
     width: 15%;
     color: $colorPrimary;
 
@@ -52,6 +54,12 @@
       order: -1;
       margin-top: 1rem;
     }
+  }
+  .selectUnitListItem {
+    margin-left: 1rem;
+  }
+  .selectＧetLocationListItem {
+    margin-left: 1rem;
   }
 
   .el-input__icon {
