@@ -7,8 +7,6 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "postcss-loader": "^3.0.0",
-    "raw-loader": "^0.5.1",
     "@ckeditor/ckeditor5-alignment": "^19.0.0",
     "@ckeditor/ckeditor5-basic-styles": "^19.0.0",
     "@ckeditor/ckeditor5-ckfinder": "^19.0.0",
@@ -34,20 +32,22 @@
     "@fullcalendar/vue": "^4.4.0",
     "axios": "^0.19.2",
     "babel-polyfill": "^6.26.0",
+    "blob": "^0.1.0",
     "core-js": "^3.6.5",
     "element-ui": "^2.13.2",
-    "blob": "^0.1.0",
     "moment": "^2.26.0",
+    "postcss-loader": "^3.0.0",
+    "quill-image-resize-module": "^3.0.0",
+    "quill-image-resize-vue": "^1.0.4",
+    "raw-loader": "^0.5.1",
     "vue": "^2.6.11",
-    "vue-sweetalert2": "^3.0.6",
     "vue-axios": "^2.1.5",
     "vue-google-oauth2": "^1.5.4",
     "vue-loading-overlay": "^3.3.2",
     "vue-router": "^3.2.0",
-    "vuex": "^3.4.0",
-    "quill-image-resize-module": "^3.0.0",
-    "quill-image-resize-vue": "^1.0.4",
-    "vue2-editor": "^2.10.2"
+    "vue-sweetalert2": "^3.0.6",
+    "vue2-editor": "^2.10.2",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

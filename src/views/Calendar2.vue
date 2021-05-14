@@ -2,7 +2,7 @@
   <div id="Calendar2">
     <Header @getShowMenu="getShowMenu"></Header>
     <div class="filterBox" :class="{ showMenu: showMenu }">
-      <template v-for="item in eventTypeData">
+      <!-- <template v-for="item in eventTypeData">
         <label :for="item.Id" :key="item.Id">
           <input
             class="typeCheckBox"
@@ -20,12 +20,13 @@
             <i class="fas fa-times-circle cross"></i>
           </span>
         </label>
-      </template>
+      </template> -->
       <!-- 新增單位 -->
-      <!-- <el-select
+      <el-select
         v-model="listQuery.unit"
         placeholder="請選擇單位"
         class="selectUnitListItem"
+        @change="chooseUnit"
       >
         <el-option
           v-for="item in getUnitListItemData"
@@ -34,13 +35,14 @@
           :value="item.value"
         >
         </el-option>
-      </el-select> -->
+      </el-select>
 
       <!-- 新增地點 -->
-      <!-- <el-select
+      <el-select
         v-model="listQuery.local"
         placeholder="請選擇地點"
         class="selectＧetLocationListItem"
+        @change="chooseLocal"
       >
         <el-option
           v-for="item in getLocationListItemData"
@@ -49,7 +51,8 @@
           :value="item.value"
         >
         </el-option>
-      </el-select> -->
+      </el-select>
+      <!-- 搜尋欄 -->
       <el-input
         @keydown.native.enter="searchHandler"
         class="searchInput"
@@ -84,21 +87,21 @@
     allDaySlot：確定“全天”廣告位是否顯示在日曆的頂部。 -->
     <div id="fullCalendar">
       <FullCalendar
-        v-if="eventData"
+        v-if="calendarEvents"
         locale="zh-tw"
         class="wzCalendar"
         defaultView="dayGridMonth"
         :plugins="calendarPlugins"
         :weekends="true"
-        :events="eventFilter"
         :eventLimit="true"
+        :events="calendarEvents"
         height="parent"
         :eventTimeFormat="eventTimeFormat"
         :allDaySlot="false"
-        @eventRender="this.eventRender"
-        @datesRender="this.datesRender"
         ref="fullCalendar"
         :allDayDefault="false"
+        @eventRender="this.eventRender"
+        @datesRender="this.datesRender"
         :header="{
           left: 'prev,next today',
           center: 'title',
@@ -107,100 +110,41 @@
       />
     </div>
 
-    <!-- eventDailog -->
-    <el-dialog custom-class="eventDailog" :visible.sync="eventDailog">
-      <div slot="title" class="header-title">
-        <span class="eventTitle">{{ dialogEvent.EventName }}</span>
-        <span v-if="eventTypeData" class="typeName">{{
-          typeName(dialogEvent.EventTypeId)
-        }}</span>
-        <span class="eventUnitCode">{{ dialogEvent.UnitCode }}</span>
-        <el-divider></el-divider>
+    <!-- new dialog -->
+    <el-dialog
+      append-to-bodycustom-class="eventDailog"
+      :visible.sync="eventDailog"
+      :title="dialogEvent.title"
+      width="60%"
+    >
+      <div>
+        <img :src="dialogEvent.pics" :alt="dialogEvent.title" width="100%" />
       </div>
-      <div class="dialogMain">
-        <div class="dialogBox">
-          <p class="boxTitle">活動地點</p>
-          <p>{{ dialogEvent.EventAddr }}</p>
-        </div>
-        <div class="dialogBox">
-          <p class="boxTitle">開始時間</p>
-          <p>{{ dateFilter(dialogEvent.EventStartDate) }}</p>
-        </div>
-        <div class="dialogBox">
-          <p class="boxTitle">結束時間</p>
-          <p>{{ dateFilter(dialogEvent.EventEndDate) }}</p>
-        </div>
-        <div style="flex-wrap: wrap" class="dialogBox">
-          <p class="boxTitle">活動描述</p>
-          <vue-editor id="editor" v-model="dialogEvent.Summary"></vue-editor>
-        </div>
-        <div class="dialogBox">
-          <p class="boxTitle">活動連結</p>
-          <p
-            class="noInfo"
-            v-if="!dialogEvent.LinkUrl || dialogEvent.LinkUrl == ' '"
-          >
-            暫無連結
-          </p>
-          <a
-            class="eventLink"
-            v-else
-            target="_blank"
-            :href="dialogEvent.LinkUrl"
-          >
-            <i class="fas fa-link"></i>前往連結
-          </a>
-        </div>
-        <div class="dialogBox" v-if="dialogEvent.AttachDoc">
-          <p class="boxTitle">附件下載</p>
-          <p
-            class="noInfo"
-            v-if="
-              dialogEvent.AttachDoc.length === 0 ||
-                dialogEvent.AttachDoc[0] == ' '
-            "
-          >
-            暫無附件
-          </p>
-          <template v-else>
-            <a
-              v-for="(url, index) in dialogEvent.AttachDoc"
-              :key="index"
-              target="_blank"
-              class="eventLink"
-              :href="`https://cal.wzu.edu.tw/${url}`"
-            >
-              <i class="fas fa-file-download"></i>
-              附件下載
-            </a>
-          </template>
-        </div>
-        <div class="joinUserBox" v-if="dialogEvent.JoinUsers">
-          <p class="boxTitle">參與人員</p>
-          <p v-if="!isLogin" class="noInfo noJoinUser">登入後查看</p>
-          <el-table
-            v-else
-            header-cell-class-name="tableHeader"
-            empty-text="暫無資料"
-            :data="dialogEvent.JoinUsers"
-            style="margin-top: 1rem"
-          >
-            <el-table-column property="userName" label="姓名"></el-table-column>
-            <!-- <el-table-column
-              property="usertitle"
-              label="職稱"
-            ></el-table-column> -->
-            <el-table-column property="unit" label="單位"></el-table-column>
-            <el-table-column
-              property="userType"
-              label="參與角色"
-            ></el-table-column>
-          </el-table>
-        </div>
+      <div>
+        <p>主題</p>
+        <p>{{ dialogEvent.summary }}</p>
+      </div>
+      <div>
+        <p>活動內容</p>
+        <p>{{ dialogEvent.contents }}</p>
+      </div>
+      <div>
+        <p>相關連結</p>
+        <a :href="dialogEvent.links" target="_blank"
+          >{{ dialogEvent.links }}
+        </a>
+      </div>
+      <div>
+        <p>活動時間</p>
+        <p>{{ dialogEvent.activDate }}</p>
+      </div>
+      <div>
+        <p>相關地點</p>
+        <p>{{ dialogEvent.activLocation }}</p>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="info" @click="eventDailog = false">取 消</el-button>
-        <el-button type="primary" @click="addToGoogleCalendar"
+        <el-button type="primary" @click="addToGoogleCalendar()"
           >新增到GOOGLE行事曆</el-button
         >
       </span>
@@ -211,7 +155,7 @@
       <!-- <span>請選擇匯出類別</span> -->
       <el-row>
         <el-col :span="12">
-          <el-select v-model="listQuery.unit" multiple placeholder="請選擇單位">
+          <el-select v-model="outExcelData.unit" placeholder="請選擇單位">
             <el-option
               v-for="item in getUnitListItemData"
               :key="item.value"
@@ -223,12 +167,7 @@
         </el-col>
 
         <el-col :span="12">
-          <el-select
-            v-model="listQuery.local"
-            multiple
-            collapse-tags
-            placeholder="請選擇地點"
-          >
+          <el-select v-model="outExcelData.local" placeholder="請選擇地點">
             <el-option
               v-for="item in getLocationListItemData"
               :key="item.value"
@@ -240,9 +179,36 @@
         </el-col>
       </el-row>
 
+      <!-- 時間 -->
+      <div class="block">
+        <!-- <span class="demonstration">默认</span> -->
+        <el-date-picker
+          v-model="daterange"
+          type="daterange"
+          range-separator="至"
+          start-placeholder="開始日期"
+          end-placeholder="結束日期"
+        >
+        </el-date-picker>
+      </div>
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="exportDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="handleExport">確 定</el-button>
+        <el-button type="primary">
+          <a
+            :href="
+              'https://www.ntua.edu.tw/calendar/api/Events/OutExcel?location=' +
+                outExcelData.local +
+                '&unit=' +
+                outExcelData.unit +
+                '&startDate=' +
+                setDateFormat(daterange[0]) +
+                '&endDate=' +
+                setDateFormat(daterange[1])
+            "
+            >確 定</a
+          >
+        </el-button>
       </span>
     </el-dialog>
   </div>
@@ -268,6 +234,12 @@ export default {
   },
   data() {
     return {
+      daterange: "",
+      outExcelData: {
+        local: "",
+        unit: "",
+      },
+      calendarEvents: [],
       // list
       listQuery: {
         unit: "",
@@ -321,7 +293,7 @@ export default {
       startG: "",
       endG: "",
       titleG: "",
-
+      MainColor: "#00cec9",
       // getUnitListItem
       getUnitListItemData: [],
 
@@ -333,62 +305,24 @@ export default {
     isLogin() {
       return window.localStorage.Token ? true : false
     },
-    eventFilter() {
-      const vm = this
-      return vm.eventData.filter((event) => {
-        // console.log("filterEvent", event)
-        return vm.typeCheckBox.includes(event.cName)
-      })
-    },
-  },
-  methods: {
-    handleExport() {
-      const vm = this
-      if (vm.exportType.length <= 0) {
-        vm.$alertM.fire({
-          icon: "error",
-          title: `請選擇匯出類別`,
-        })
-      } else {
-        let typeIds = vm.exportType.join()
-        let date = moment(new Date()).format("YYYYMMDDHHMM")
-        let config = {
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `Bearer ${vm.$store.state.token}`,
-          },
-          responseType: "blob", //// 回應類型為 blob
-        }
-        this.$http
-          .get(
-            `${vm.baseUrl}CalendarEvent/GetCalendarExcelClient?typeIds=${typeIds}`,
-            config
-          )
-          .then((res) => {
-            // console.log(res);
-            let blob = new Blob([res.data], {
-              type: "application/" + res.headers["content-type"],
-            })
-            let downloadElement = document.createElement("a")
-            let href = window.URL.createObjectURL(blob) // 創建下載的鏈接
-            downloadElement.href = href
-            downloadElement.download = `行事曆事件_${date}.xlsx` // 下載後文件名
-            // 此寫法兼容可火狐瀏覽器
-            document.body.appendChild(downloadElement)
-            downloadElement.click() // 點擊下載
-            document.body.removeChild(downloadElement) // 下載完成移除元素
-            window.URL.revokeObjectURL(href) // 釋放掉 blob 對象
-            vm.$alertM.fire({
-              icon: "success",
-              title: `匯出成功`,
-            })
-            vm.exportDialogVisible = false
-          })
+    setDateFormat() {
+      return (date) => {
+        return moment(date).format("YYYY-MM-DD")
       }
     },
+    // eventFilter() {
+    //   const vm = this
+    //   return vm.eventData.filter((event) => {
+    //     console.log("filterEvent", event)
+    //     return vm.listQuery.includes(event.cName)
+    //   })
+    // },
+  },
+  methods: {
     // calendar list
     getEventData({ unit, location, startDate, endDate }) {
       const vm = this
+      // 只接收當月的
       let params = {
         unit: unit || this.listQuery.unit,
         location: location || this.listQuery.local,
@@ -396,19 +330,11 @@ export default {
         endDate: endDate || this.listQuery.endDate,
       }
       vm.$api.GetEvents(params).then((res) => {
-        console.log("res", res.data)
-        this.eventTypeData = res.data
         let arr = res.data.map((event) => {
-          event.title = event.title
-          // event.backgroundColor = event.MainColor
-          // console.log(event.EventTypeId);
-          // if (event.EventTypeId == 1) {
-          //   event.backgroundColor = "red";
-          // } else if (event.EventTypeId == 2) {
-          //   event.backgroundColor = "blue";
-          // } else {
-          //   event.backgroundColor = "green";
-          // }
+          // 進入點：前端把後端回傳資料轉換成前端格式
+          // 左邊自定義 ＝右邊資料回傳
+          event.backgroundColor = this.MainColor
+          // 判斷當天日期，沒有時間
           let a = moment(event.end).format("YYYY-MM-DD")
           let b = moment(event.start).format("YYYY-MM-DD")
           let c
@@ -418,29 +344,38 @@ export default {
           event.start = moment(event.start).format("YYYY-MM-DDTHH:mm:ss")
           return event
         })
-        vm.eventData = arr
+        // console.log("arr", arr)
+        this.calendarEvents = arr
+
+        // push new data
+        let newD = {
+          backgroundColor: "#00cec9",
+          cName: "行政",
+          className: "isNotAllday",
+          end: "2021-05-02T10:00:00",
+          id: "",
+          start: "2021-05-02T12:00:00",
+          title: "test--2",
+        }
+        this.calendarEvents.push(newD)
+        this.$store.dispatch("loadingHandler", false)
       })
     },
-    // async getEventType() {
-    //   const vm = this
-    //   await vm.$api.GetEventType().then((res) => {
-    //     vm.eventTypeData = res.data
-    //     if (!vm.onlyActivity) {
-    //       vm.typeCheckBox = res.data.map((type) => {
-    //         return type.EventTypeName
-    //       })
-    //     } else {
-    //       vm.typeCheckBox = ["活動"]
-    //     }
-    //   })
-    // },
+    chooseUnit() {
+      this.$store.dispatch("loadingHandler", true)
+      this.getEventData("", "", "", "")
+    },
+    chooseLocal() {
+      this.$store.dispatch("loadingHandler", true)
+      this.getEventData("", "", "", "")
+    },
     searchHandler() {
       // console.log("search");
       const vm = this
-      let unit = vm.unit
-      let location = vm.location
-      let startDate = vm.startDate
-      let endDate = vm.endDate
+      let unit = vm.listQuery.unit
+      let location = vm.listQuery.local
+      let startDate = vm.listQuery.startDate
+      let endDate = vm.listQuery.endDate
       // let key = vm.searchInput
       vm.getEventData({ unit, location, startDate, endDate })
     },
@@ -566,14 +501,16 @@ export default {
     },
     eventRender(info) {
       const vm = this
-      // 未觸發？
-      // console.log("eventRender_info", info)
       info.el.addEventListener("click", function() {
-        let Id = info.event.extendedProps.Id
-        let params = { Id }
-        vm.$api.GetEventById(params).then((res) => {
-          vm.dialogEvent = res.data.response
-          // console.log(vm.dialogEvent);
+        // console.log("info", info)
+        let insid = info.event.id
+        let params = { insid }
+        // console.log(params)
+        // return
+        vm.$api.GetDetail(params).then((res) => {
+          console.log("res", res)
+          vm.dialogEvent = res.data
+          // return
           vm.$nextTick(() => {
             vm.eventDailog = true
           })
@@ -581,23 +518,25 @@ export default {
       })
     },
     datesRender(info) {
+      // console.log("info", info)
       const vm = this
-      // console.log("Render_info", info)
       // let type = info.view.viewSpec.type
       let startDate = moment(info.view.activeStart).format("yyyy-MM-DD")
       let endDate = moment(info.view.activeEnd).format("yyyy-MM-DD")
       // let key = vm.searchInput
-      vm.startDate = startDate
-      vm.endDate = endDate
+      vm.listQuery.startDate = startDate
+      vm.listQuery.endDate = endDate
+      let unit = vm.listQuery.unit
+      let location = vm.listQuery.local
       // console.log(vm.startDate, vm.endDate, vm.getEventData)
-      let unit = ""
-      let location = ""
-      // console.log("startDate", startDate)
-      // console.log("endDate", endDate)
+      // 當頁日曆第一格顯示跟最後一個顯示
+      // console.log("startDate", vm.listQuery.startDate)
+      // console.log("endDate", vm.listQuery.endDate)
       vm.getEventData({ unit, location, startDate, endDate })
     },
     typeName(eid) {
       const vm = this
+      // console.log("eventTypeData", eventTypeData)
       return vm.eventTypeData
         .map((event) => {
           return event.Id === eid ? event.EventTypeName : ""
@@ -613,15 +552,15 @@ export default {
     async getUnitListItemFun() {
       const vm = this
       await vm.$api.GetUnitListItem().then((res) => {
-        // console.log("getUnitListItemData", res.data)
         vm.getUnitListItemData = res.data
+        // console.log("getUnitListItemData", vm.getUnitListItemData)
       })
     },
     async getLocationListItemFun() {
       const vm = this
       await vm.$api.GetLocationListItem().then((res) => {
-        // console.log("GetLocationListItem", res.data)
         vm.getLocationListItemData = res.data
+        // console.log("getLocationListItemData", vm.getLocationListItemData)
       })
     },
   },
