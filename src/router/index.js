@@ -13,8 +13,8 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: "/Calendar", //開頭大寫
-    name: "Calendar", //開頭大寫
+    path: "/Calendar3", //開頭大寫
+    name: "Calendar3", //開頭大寫
     component: () => import("../views/Calendar3.vue"),
     meta: {
       title: "行事曆", //中文為主 若為英文開頭大寫
@@ -23,8 +23,8 @@ const routes = [
     },
   },
   {
-    path: "/Calendar2", //開頭大寫
-    name: "Calendar2", //開頭大寫
+    path: "/Calendar", //開頭大寫
+    name: "Calendar", //開頭大寫
     component: () => import("../views/Calendar2.vue"),
     meta: {
       title: "行事曆", //中文為主 若為英文開頭大寫
