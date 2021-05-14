@@ -23,7 +23,7 @@
       </template> -->
       <!-- 新增單位 -->
       <el-select
-        v-model="calendarEvents.unit"
+        v-model="listQuery.unit"
         placeholder="請選擇單位"
         class="selectUnitListItem"
         @change="chooseUnit"
@@ -39,7 +39,7 @@
 
       <!-- 新增地點 -->
       <el-select
-        v-model="calendarEvents.local"
+        v-model="listQuery.local"
         placeholder="請選擇地點"
         class="selectＧetLocationListItem"
         @change="chooseLocal"
@@ -79,6 +79,7 @@
       >
     </div>
 
+    <!-- 用 events 綁 calendarEvents 資料 -->
     <!-- calendar -->
     <div id="fullCalendar">
       <FullCalendar
@@ -94,6 +95,7 @@
         :events="calendarEvents"
         :weekends="true"
         :eventLimit="true"
+        :allDayDefault="false"
         :header="header"
       />
     </div>
@@ -249,11 +251,8 @@ import FullCalendar from "@fullcalendar/vue"
 import dayGridPlugin from "@fullcalendar/daygrid"
 import moment from "moment"
 import { VueEditor } from "vue2-editor"
-import { Calendar } from "@fullcalendar/core"
-import twLocale from "@fullcalendar/core/locales/zh-tw"
 import timeGridPlugin from "@fullcalendar/timegrid"
 import interactionPlugin from "@fullcalendar/interaction"
-import axios from "axios"
 export default {
   name: "Calendar",
   components: {
@@ -263,19 +262,6 @@ export default {
   },
   data() {
     return {
-      calendarEvents: {
-        unit: "",
-        local: "",
-        cName: "",
-        startDate: moment()
-          .startOf("month")
-          .format("HH:mm:ss"),
-        endDate: moment()
-          .endOf("month")
-          .format("HH:mm:ss"),
-        id: "",
-        title: "",
-      },
       //表頭格式
       header: {
         left: "prev,next today",
@@ -324,6 +310,18 @@ export default {
       endG: "",
       titleG: "",
 
+      calendarEvents: "",
+
+      listQuery: {
+        unit: "",
+        local: "",
+        startDate: moment()
+          .startOf("month")
+          .format("YYYY-MM-DD"),
+        endDate: moment()
+          .endOf("month")
+          .format("YYYY-MM-DD"),
+      },
       // getUnitListItem
       getUnitListItemData: [],
 
@@ -384,23 +382,24 @@ export default {
     // calendar list
     getEventData({ unit, location, startDate, endDate }) {
       let params = {
-        unit: unit || this.calendarEvents.unit,
-        location: location || this.calendarEvents.local,
-        startDate: startDate || this.calendarEvents.startDate,
-        endDate: endDate || this.calendarEvents.endDate,
+        unit: unit || this.listQuery.unit,
+        location: location || this.listQuery.local,
+        startDate: startDate || this.listQuery.startDate,
+        endDate: endDate || this.listQuery.endDate,
       }
       this.$api.GetEvents(params).then((res) => {
-        console.log(res.data)
+        // console.log("GetEvents", res.data)
         this.calendarEvents = res.data
         let arr = res.data.map((item) => {
-          console.log("item", item)
-          // item.end = moment(item.end).format("YYYY-MM-DDTHH:mm:ss")
-          // item.start = moment(item.start).format("YYYY-MM-DDTHH:mm:ss")
+          // console.log("item", item)
+          item.end = moment(item.end).format("YYYY-MM-DDTHH:mm:ss")
+          item.start = moment(item.start).format("YYYY-MM-DDTHH:mm:ss")
           return item
         })
-        console.log("arr", arr)
+        // console.log("arr", arr)
         this.eventData = arr
       })
+      this.$store.dispatch("loadingHandler", false)
     },
     chooseUnit() {
       this.$store.dispatch("loadingHandler", true)
@@ -413,10 +412,10 @@ export default {
     searchHandler() {
       // console.log("search");
       const vm = this
-      let unit = vm.calendarEvents.unit
-      let location = vm.calendarEvents.local
-      let startDate = vm.calendarEvents.startDate
-      let endDate = vm.calendarEvents.endDate
+      let unit = vm.listQuery.unit
+      let location = vm.listQuery.local
+      let startDate = vm.listQuery.startDate
+      let endDate = vm.listQuery.endDate
       // let key = vm.searchInput
       vm.getEventData({ unit, location, startDate, endDate })
     },
