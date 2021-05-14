@@ -28,6 +28,10 @@ const api = {
   GetEvents(params) {
     return req("get", "Events/GetEvents", params)
   },
+  GetDetail(params) {
+    return req("get", "Events/GetDetail", params)
+  },
+
   GetEventsPage(params) {
     return req("get", "CalendarEvent/GetClient", params)
   },
