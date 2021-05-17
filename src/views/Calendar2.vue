@@ -31,6 +31,7 @@
             v-model="listQuery.unit"
             placeholder="請選擇單位"
             @change="chooseUnit"
+            :clearable="true"
           >
             <el-option
               v-for="item in getUnitListItemData"
@@ -47,6 +48,7 @@
             v-model="listQuery.local"
             placeholder="請選擇地點"
             @change="chooseLocal"
+            :clearable="true"
           >
             <el-option
               v-for="item in getLocationListItemData"
@@ -63,6 +65,7 @@
             @keydown.native.enter="searchHandler"
             placeholder="請輸入關鍵字"
             v-model="searchInput"
+            :clearable="true"
           >
             <i
               @click="searchHandler"
@@ -96,7 +99,7 @@
         :plugins="calendarPlugins"
         :weekends="true"
         :eventLimit="true"
-        :events="calendarEvents"
+        :events="eventFilter"
         height="parent"
         :eventTimeFormat="eventTimeFormat"
         :allDaySlot="false"
@@ -119,30 +122,42 @@
       :title="dialogEvent.title"
       width="60%"
     >
-      <div>
+      <div class="dialog__image">
         <img :src="dialogEvent.pics" :alt="dialogEvent.title" width="100%" />
       </div>
-      <div>
-        <p>主題</p>
-        <p>{{ dialogEvent.summary }}</p>
-      </div>
-      <div>
-        <p>活動內容</p>
-        <p>{{ dialogEvent.contents }}</p>
-      </div>
-      <div>
-        <p>相關連結</p>
-        <a :href="dialogEvent.links" target="_blank"
-          >{{ dialogEvent.links }}
-        </a>
-      </div>
-      <div>
-        <p>活動時間</p>
-        <p>{{ dialogEvent.activDate }}</p>
-      </div>
-      <div>
-        <p>相關地點</p>
-        <p>{{ dialogEvent.activLocation }}</p>
+      <!-- 整頁複製鈕 -->
+      <el-badge is-dot class="item">
+        <el-button
+          class="share-button"
+          icon="el-icon-share"
+          type="Info"
+        ></el-button>
+      </el-badge>
+
+      <!-- 所有內容 -->
+      <div class="dialog">
+        <div>
+          <h4>主題 :</h4>
+          <p class="dialog__summary">{{ dialogEvent.summary }}</p>
+        </div>
+        <div class="">
+          <h4>活動內容 :</h4>
+          <p class="dialog__contents">{{ dialogEvent.contents }}</p>
+        </div>
+        <div>
+          <h4>相關連結 :</h4>
+          <a :href="dialogEvent.links" target="_blank" class="dialog__links"
+            >{{ dialogEvent.links }}
+          </a>
+        </div>
+        <div>
+          <h4>活動時間 :</h4>
+          <p class="dialog__activDate">{{ dialogEvent.activDate }}</p>
+        </div>
+        <div>
+          <h4>相關地點</h4>
+          <p class="dialog__activLocation">{{ dialogEvent.activLocation }}</p>
+        </div>
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="info" @click="eventDailog = false">取 消</el-button>
@@ -301,7 +316,7 @@ export default {
       startG: "",
       endG: "",
       titleG: "",
-      color: "#00cec9",
+
       // getUnitListItem
       getUnitListItemData: [],
 
@@ -318,13 +333,12 @@ export default {
         return moment(date).format("YYYY-MM-DD")
       }
     },
-    // eventFilter() {
-    //   const vm = this
-    //   return vm.calendarEvents.filter((event) => {
-    //     console.log("filterEvent", event)
-    //     return vm.listQuery.includes(event.cName)
-    //   })
-    // },
+    eventFilter() {
+      const vm = this
+      return vm.calendarEvents.filter((event) => {
+        return vm.typeCheckBox.includes(event.cName)
+      })
+    },
   },
   methods: {
     // calendar list
@@ -341,10 +355,11 @@ export default {
         let arr = res.data.map((event) => {
           // 進入點：前端把後端回傳資料轉換成前端格式
           // 左邊自定義 ＝右邊資料回傳
-          event.backgroundColor = this.color
+          event.backgroundColor = this.getCalendarColor(event.cName)
           // 判斷當天日期，沒有時間
           let a = moment(event.end).format("YYYY-MM-DD")
           let b = moment(event.start).format("YYYY-MM-DD")
+          // console.log(a, b)
           let c
           c = a === b ? true : false
           event.className = c ? "isNotAllday" : ""
@@ -356,19 +371,45 @@ export default {
         this.calendarEvents = arr
 
         // push new data
-        let newD = {
-          backgroundColor: "#00cec9",
-          cName: "行政",
-          className: "isNotAllday",
-          end: "2021-05-02T10:00:00",
-          id: "",
-          start: "2021-05-02T12:00:00",
-          title: "test--2",
-        }
-        this.calendarEvents.push(newD)
+        // let newD = {
+        //   backgroundColor: "#00cec9",
+        //   cName: "行政",
+        //   className: "isNotAllday",
+        //   end: "2021-05-02T10:00:00",
+        //   id: "",
+        //   start: "2021-05-02T12:00:00",
+        //   title: "test--2",
+        // }
+        // this.calendarEvents.push(newD)
         this.$store.dispatch("loadingHandler", false)
       })
     },
+
+    // get color
+    getCalendarColor(typeName) {
+      // console.log(typeName)
+      let colorStr = ""
+      switch (typeName) {
+        case "行政":
+          colorStr = "#EE6B6B"
+          break
+        case "展覽":
+          colorStr = "#E28F15"
+          break
+        case "表演":
+          colorStr = "#B600F5"
+          break
+        case "播映":
+          colorStr = "#9C2626"
+          break
+        case "學術":
+          colorStr = "#2093D3"
+          break
+      }
+      // console.log("colorStr", colorStr)
+      return colorStr
+    },
+
     getEventType() {
       const vm = this
       vm.eventTypeData = vm.$store.state.tagGroup
@@ -522,19 +563,26 @@ export default {
     eventRender(info) {
       const vm = this
       info.el.addEventListener("click", function() {
-        // console.log("info", info)
+        console.log("info", info)
         let insid = info.event.id
-        let params = { insid }
-        // console.log(params)
-        // return
-        vm.$api.GetDetail(params).then((res) => {
-          console.log("res", res)
-          vm.dialogEvent = res.data
-          // return
-          vm.$nextTick(() => {
-            vm.eventDailog = true
+        if (insid === "") {
+          vm.$api.GetDetail().then((res) => {
+            console.log("res", res)
+            vm.dialogEvent = res.data
+            vm.$nextTick(() => {
+              vm.eventDailog = true
+            })
           })
-        })
+        } else {
+          let params = { insid }
+          vm.$api.GetDetail(params).then((res) => {
+            console.log("res", res)
+            vm.dialogEvent = res.data
+            vm.$nextTick(() => {
+              vm.eventDailog = true
+            })
+          })
+        }
       })
     },
     datesRender(info) {

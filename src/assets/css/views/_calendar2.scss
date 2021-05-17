@@ -83,6 +83,8 @@
   }
 
   #fullCalendar {
+    height: 90vh;
+    margin: 1rem auto 3rem auto;
     width: 100%;
     padding: 20px;
     box-sizing: border-box;
@@ -133,6 +135,11 @@
         }
       }
     }
+
+    .fc-event {
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
   }
 
   .exportDialog {
@@ -158,6 +165,28 @@
           }
         }
       }
+    }
+  }
+  .el-dialog__title {
+    color: #000000;
+    font-weight: 700;
+  }
+  .dialog {
+    font-family: "Heiti TC Light", "Microsoft JhengHei", "微軟正黑體",
+      "Microsoft Sans Serif", "Helvetica", "Times New Roman", "Myriad", Arial;
+    color: #000000;
+    h4 {
+      border-bottom: 1px solid #e7e7e7;
+      padding: 0 0 10px 0;
+      margin: 20px 0 20px 0;
+      font-size: 18px;
+    }
+    p {
+      font-size: 16px;
+      line-height: 28px;
+      word-wrap: break-word;
+      word-break: normal;
+      text-align: justify;
     }
   }
 }
