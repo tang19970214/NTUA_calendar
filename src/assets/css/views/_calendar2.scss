@@ -1,0 +1,163 @@
+#Calendar2 {
+  .filterBox {
+    box-sizing: border-box;
+    border-radius: 4px;
+    width: calc(100% - 40px);
+    background: #dfdfdf;
+    margin: 20px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+
+    &__tag {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      label {
+        margin-right: 8px;
+        color: #ffffff;
+        &:first-child {
+          margin-left: 8px;
+        }
+        &:last-child {
+          margin-right: 0;
+        }
+        .typeCheckBox {
+          display: none;
+        }
+
+        .checkedType {
+          border-radius: 4px;
+          padding: 8px 16px;
+          cursor: pointer;
+
+          // 點擊type 樣式改變
+          &.isNotActive {
+            color: #484848;
+            transition: 0.5s;
+            background: #b1b1b1 !important;
+            border: 1px solid #cccccc;
+
+            .cross {
+              display: none;
+              font-size: 14px;
+              margin-left: 0.5rem;
+              display: none;
+              color: rgba(255, 255, 255, 0.6);
+              transition: 0.5s;
+            }
+          }
+        }
+        // & :active {
+        //   background: #b1b1b1;
+        // }
+      }
+    }
+
+    &__type {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+
+      &--unit {
+        padding: 0 8px;
+      }
+
+      &--local {
+        padding: 0 8px;
+      }
+
+      &--keyword {
+        padding: 0 8px;
+        display: flex;
+        align-items: center;
+        ::placeholder {
+          color: #c0ae68;
+        }
+        button {
+          margin-left: 4px;
+        }
+      }
+    }
+  }
+
+  #fullCalendar {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+    .fc-toolbar {
+      .fc-left {
+        div > button {
+          background: #c0ae68;
+          border: #c0ae68;
+        }
+        .fc-today-button {
+          background: #484848;
+        }
+        .fc-button:disabled {
+          opacity: 1;
+        }
+      }
+
+      .fc-center {
+        h2 {
+          color: #c0ae68;
+          font-family: Roboto;
+          font-weight: 500;
+          font-size: 28px;
+        }
+      }
+
+      .fc-right {
+        .fc-button-group {
+          button {
+            color: #b1b1b1;
+            border: 1px solid #b1b1b1;
+          }
+          .fc-dayGridMonth-button {
+            background-color: #e5e5e5;
+          }
+          .fc-timeGridWeek-button {
+            background-color: #e5e5e5;
+          }
+          .fc-timeGridDay-button {
+            background-color: #e5e5e5;
+          }
+
+          .fc-button-active {
+            background-color: #484848;
+            color: #ffffff;
+          }
+        }
+      }
+    }
+  }
+
+  .exportDialog {
+    .el-dialog {
+      &__body {
+        .daterange {
+          margin-top: 16px;
+          width: 100%;
+          &__date {
+            width: 100%;
+          }
+        }
+      }
+      &__footer {
+        .dialog-footer {
+          .el-button--primary {
+            background: #c0ae68;
+            color: #ffffff;
+            a {
+              background: #c0ae68;
+              color: #ffffff;
+            }
+          }
+        }
+      }
+    }
+  }
+}

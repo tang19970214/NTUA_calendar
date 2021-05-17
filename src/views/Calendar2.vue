@@ -2,82 +2,85 @@
   <div id="Calendar2">
     <Header @getShowMenu="getShowMenu"></Header>
     <div class="filterBox" :class="{ showMenu: showMenu }">
-      <!-- <template v-for="item in eventTypeData">
-        <label :for="item.Id" :key="item.Id">
-          <input
-            class="typeCheckBox"
-            :value="item.EventTypeName"
-            v-model="typeCheckBox"
-            type="checkbox"
-            :id="item.Id"
-          />
-          <span
-            :style="`background:${item.MainColor}`"
-            :class="{ isNotActive: checkIncludes(item.EventTypeName) }"
-            class="checkedType"
-          >
-            {{ item.EventTypeName }}
-            <i class="fas fa-times-circle cross"></i>
-          </span>
-        </label>
-      </template> -->
-      <!-- 新增單位 -->
-      <el-select
-        v-model="listQuery.unit"
-        placeholder="請選擇單位"
-        class="selectUnitListItem"
-        @change="chooseUnit"
-      >
-        <el-option
-          v-for="item in getUnitListItemData"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
+      <div class="filterBox__tag">
+        <template v-for="item in eventTypeData">
+          <label :for="item.Id" :key="item.Id">
+            <input
+              class="typeCheckBox"
+              :value="item.typeName"
+              v-model="typeCheckBox"
+              type="checkbox"
+              :id="item.Id"
+            />
+            <span
+              :style="`background:${item.color}`"
+              :class="{ isNotActive: checkIncludes(item.typeName) }"
+              class="checkedType"
+            >
+              {{ item.typeName }}
+              <i class="fas fa-times-circle cross"></i>
+            </span>
+          </label>
+        </template>
+      </div>
 
-      <!-- 新增地點 -->
-      <el-select
-        v-model="listQuery.local"
-        placeholder="請選擇地點"
-        class="selectＧetLocationListItem"
-        @change="chooseLocal"
-      >
-        <el-option
-          v-for="item in getLocationListItemData"
-          :key="item.value"
-          :label="item.label"
-          :value="item.value"
-        >
-        </el-option>
-      </el-select>
-      <!-- 搜尋欄 -->
-      <el-input
-        @keydown.native.enter="searchHandler"
-        class="searchInput"
-        placeholder="請輸入關鍵字"
-        v-model="searchInput"
-      >
-        <i
-          @click="searchHandler"
-          slot="suffix"
-          class="el-input__icon el-icon-search"
-        ></i>
-      </el-input>
-      <el-button
-        @click="exportDialogVisible = true"
-        type="primary"
-        class="adSearch"
-        >匯出Excel</el-button
-      >
-      <el-button
-        @click="$router.push('/AdvancedSearch')"
-        type="primary"
-        class="adSearch"
-        v-if="isLogin"
-        >進階搜尋</el-button
-      >
+      <div class="filterBox__type">
+        <!-- 新增單位 -->
+        <div class="filterBox__type--unit">
+          <el-select
+            v-model="listQuery.unit"
+            placeholder="請選擇單位"
+            @change="chooseUnit"
+          >
+            <el-option
+              v-for="item in getUnitListItemData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <!-- 新增地點 -->
+        <div class="filterBox__type--local">
+          <el-select
+            v-model="listQuery.local"
+            placeholder="請選擇地點"
+            @change="chooseLocal"
+          >
+            <el-option
+              v-for="item in getLocationListItemData"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <!-- 搜尋欄 -->
+        <div class="filterBox__type--keyword">
+          <el-input
+            @keydown.native.enter="searchHandler"
+            placeholder="請輸入關鍵字"
+            v-model="searchInput"
+          >
+            <i
+              @click="searchHandler"
+              slot="suffix"
+              class="el-input__icon el-icon-search"
+            ></i>
+          </el-input>
+          <el-button @click="exportDialogVisible = true" type="primary"
+            >匯出Excel</el-button
+          >
+          <el-button
+            @click="$router.push('/AdvancedSearch')"
+            type="primary"
+            v-if="isLogin"
+            >進階搜尋</el-button
+          >
+        </div>
+      </div>
     </div>
 
     <!-- calendar -->
@@ -89,7 +92,6 @@
       <FullCalendar
         v-if="calendarEvents"
         locale="zh-tw"
-        class="wzCalendar"
         defaultView="dayGridMonth"
         :plugins="calendarPlugins"
         :weekends="true"
@@ -151,7 +153,12 @@
     </el-dialog>
 
     <!-- exportDailog -->
-    <el-dialog title="匯出提示" :visible.sync="exportDialogVisible" width="30%">
+    <el-dialog
+      class="exportDialog"
+      title="匯出提示"
+      :visible.sync="exportDialogVisible"
+      width="30%"
+    >
       <!-- <span>請選擇匯出類別</span> -->
       <el-row>
         <el-col :span="12">
@@ -180,9 +187,10 @@
       </el-row>
 
       <!-- 時間 -->
-      <div class="block">
+      <div class="daterange">
         <!-- <span class="demonstration">默认</span> -->
         <el-date-picker
+          class="daterange__date"
           v-model="daterange"
           type="daterange"
           range-separator="至"
@@ -293,7 +301,7 @@ export default {
       startG: "",
       endG: "",
       titleG: "",
-      MainColor: "#00cec9",
+      color: "#00cec9",
       // getUnitListItem
       getUnitListItemData: [],
 
@@ -312,7 +320,7 @@ export default {
     },
     // eventFilter() {
     //   const vm = this
-    //   return vm.eventData.filter((event) => {
+    //   return vm.calendarEvents.filter((event) => {
     //     console.log("filterEvent", event)
     //     return vm.listQuery.includes(event.cName)
     //   })
@@ -333,7 +341,7 @@ export default {
         let arr = res.data.map((event) => {
           // 進入點：前端把後端回傳資料轉換成前端格式
           // 左邊自定義 ＝右邊資料回傳
-          event.backgroundColor = this.MainColor
+          event.backgroundColor = this.color
           // 判斷當天日期，沒有時間
           let a = moment(event.end).format("YYYY-MM-DD")
           let b = moment(event.start).format("YYYY-MM-DD")
@@ -360,6 +368,18 @@ export default {
         this.calendarEvents.push(newD)
         this.$store.dispatch("loadingHandler", false)
       })
+    },
+    getEventType() {
+      const vm = this
+      vm.eventTypeData = vm.$store.state.tagGroup
+      // console.log(vm.eventTypeData)
+      if (!vm.onlyActivity) {
+        vm.typeCheckBox = vm.eventTypeData.map((item) => {
+          return item.typeName
+        })
+      } else {
+        vm.typeCheckBox = ["行政"]
+      }
     },
     chooseUnit() {
       this.$store.dispatch("loadingHandler", true)
@@ -539,7 +559,7 @@ export default {
       // console.log("eventTypeData", eventTypeData)
       return vm.eventTypeData
         .map((event) => {
-          return event.Id === eid ? event.EventTypeName : ""
+          return event.Id === eid ? event.typeName : ""
         })
         .join("")
     },
@@ -576,6 +596,7 @@ export default {
       // console.log(gapi.client.hasOwnProperty("calendar"));
     })
     const vm = this
+    vm.getEventType()
     vm.getEventData("", "", "", "")
     await vm.getUnitListItemFun()
     await vm.getLocationListItemFun()
