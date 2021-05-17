@@ -140,6 +140,79 @@
       border: 1px solid transparent;
       cursor: pointer;
     }
+    .isNotAllday {
+      // background-color: inherit !important;
+      padding: 0;
+      border: 0px solid #fff !important;
+      // opacity: 0.5;
+
+      .fc-content {
+        background-color: #fff;
+      }
+
+      &.fc-time-grid-event {
+        // background-color: inherit !important;
+        border: 1px solid transparent !important;
+
+        .fc-time {
+          margin-left: 0rem;
+          font-weight: 700;
+          color: #fff;
+        }
+
+        .fc-content {
+          background-color: inherit;
+        }
+
+        .fc-title {
+          color: #fff;
+          margin-left: 0rem;
+        }
+
+        &::before {
+          content: "";
+          width: 0px;
+          height: 0px;
+        }
+      }
+
+      &::before {
+        content: "";
+        position: absolute;
+        top: 4.5px;
+        left: 4px;
+        width: 10px;
+        height: 10px;
+        background: inherit;
+        border-radius: 50%;
+        z-index: 999999;
+      }
+
+      .fc-time {
+        // order: -1;
+        margin-left: 1rem;
+        font-weight: 700;
+        color: #000;
+      }
+
+      .fc-title {
+        color: #000;
+      }
+
+      &.fc-not-start {
+        &::before {
+          content: "";
+          position: absolute;
+          top: 4.5px;
+          left: 4px;
+          width: 0px;
+          height: 0px;
+          background: $colorPrimary;
+          border-radius: 50%;
+          z-index: 999999;
+        }
+      }
+    }
   }
 
   .exportDialog {

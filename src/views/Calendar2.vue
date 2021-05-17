@@ -122,11 +122,11 @@
       :title="dialogEvent.title"
       width="60%"
     >
-      <div class="dialog__image">
+      <div class="dialog__image" v-if="!!dialogEvent.pics">
         <img :src="dialogEvent.pics" :alt="dialogEvent.title" width="100%" />
       </div>
       <!-- 整頁複製鈕 -->
-      <el-badge is-dot class="item">
+      <el-badge is-dot class="item" v-if="false">
         <el-button
           class="share-button"
           icon="el-icon-share"
@@ -136,25 +136,25 @@
 
       <!-- 所有內容 -->
       <div class="dialog">
-        <div>
+        <div v-if="!!dialogEvent.summary">
           <h4>主題 :</h4>
           <p class="dialog__summary">{{ dialogEvent.summary }}</p>
         </div>
-        <div class="">
+        <div v-if="!!dialogEvent.contents">
           <h4>活動內容 :</h4>
           <p class="dialog__contents">{{ dialogEvent.contents }}</p>
         </div>
-        <div>
+        <div v-if="!!dialogEvent.links">
           <h4>相關連結 :</h4>
           <a :href="dialogEvent.links" target="_blank" class="dialog__links"
             >{{ dialogEvent.links }}
           </a>
         </div>
-        <div>
+        <div v-if="!!dialogEvent.activDate">
           <h4>活動時間 :</h4>
           <p class="dialog__activDate">{{ dialogEvent.activDate }}</p>
         </div>
-        <div>
+        <div v-if="!!dialogEvent.activLocation">
           <h4>相關地點</h4>
           <p class="dialog__activLocation">{{ dialogEvent.activLocation }}</p>
         </div>
@@ -341,6 +341,7 @@ export default {
     },
   },
   methods: {
+    // copyDialog() {},
     // calendar list
     getEventData({ unit, location, startDate, endDate }) {
       const vm = this
@@ -367,7 +368,7 @@ export default {
           event.start = moment(event.start).format("YYYY-MM-DDTHH:mm:ss")
           return event
         })
-        // console.log("arr", arr)
+        console.log("arr", arr)
         this.calendarEvents = arr
 
         // push new data
@@ -565,13 +566,17 @@ export default {
       info.el.addEventListener("click", function() {
         console.log("info", info)
         let insid = info.event.id
-        if (insid === "") {
-          vm.$api.GetDetail().then((res) => {
-            console.log("res", res)
-            vm.dialogEvent = res.data
-            vm.$nextTick(() => {
-              vm.eventDailog = true
-            })
+        if (insid == "") {
+          vm.dialogEvent = {
+            title: info.event.title,
+            activDate:
+              moment(info.event.start).format("YYYY-MM-DD") +
+              " ～ " +
+              moment(info.event.end).format("YYYY-MM-DD"),
+          }
+
+          vm.$nextTick(() => {
+            vm.eventDailog = true
           })
         } else {
           let params = { insid }
