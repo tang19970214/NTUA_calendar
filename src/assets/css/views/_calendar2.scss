@@ -245,6 +245,7 @@
     font-weight: 700;
   }
   .dialog {
+    margin-top: 40px;
     font-family: "Heiti TC Light", "Microsoft JhengHei", "微軟正黑體",
       "Microsoft Sans Serif", "Helvetica", "Times New Roman", "Myriad", Arial;
     color: #000000;
@@ -260,6 +261,27 @@
       word-wrap: break-word;
       word-break: normal;
       text-align: justify;
+    }
+  }
+
+  //   .item {
+  //     float: right;
+  //     margin-bottom: 40px;
+  //     .share-button {
+  //       display: flex;
+  //       justify-content: end;
+  //       font-size: 40px;
+  //       border: 0px;
+  //     }
+  //   }
+
+  .share {
+    float: right;
+    margin-bottom: 8px;
+    margin-right: 8px;
+    img {
+      width: 40px;
+      height: 40px;
     }
   }
 }
