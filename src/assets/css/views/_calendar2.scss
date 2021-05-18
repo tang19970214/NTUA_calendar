@@ -135,7 +135,7 @@
         }
         button {
           margin-left: 4px;
-          @include rwd($lg) {
+          @include rwd($xl) {
             display: block;
             margin: 0.75rem;
             box-sizing: border-box;
