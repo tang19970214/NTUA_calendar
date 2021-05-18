@@ -33,6 +33,16 @@ const routes = [
     },
   },
   {
+    path: "/Detail", //開頭大寫
+    name: "Detail", //開頭大寫
+    component: () => import("../views/Detail.vue"),
+    meta: {
+      title: "行事曆－詳細資訊", //中文為主 若為英文開頭大寫
+      requireAuth: false, //表示是否登入驗證 false 時可省略
+      NoNeedHome: false, // 表示不需要父層模板 false 時可省略
+    },
+  },
+  {
     path: "/test", //開頭大寫
     name: "test", //開頭大寫
     component: () => import("../views/test.vue"),

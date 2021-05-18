@@ -40,6 +40,7 @@
         margin-right: 8px;
         color: #ffffff;
 
+<<<<<<< HEAD
         // 個別標籤樣式
         @include rwd($lg) {
           margin: 8px;
@@ -47,6 +48,8 @@
         }
 
         // 第一個標籤樣式
+=======
+>>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
         &:first-child {
           margin-left: 8px;
           @include rwd($lg) {
@@ -54,7 +57,10 @@
           }
         }
 
+<<<<<<< HEAD
         // 最後一個標籤樣式
+=======
+>>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
         &:last-child {
           margin-right: 0;
           @include rwd($lg) {
@@ -62,7 +68,10 @@
           }
         }
 
+<<<<<<< HEAD
         // 隱藏勾
+=======
+>>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
         .typeCheckBox {
           display: none;
         }
@@ -99,6 +108,13 @@
             display: block;
           }
         }
+<<<<<<< HEAD
+=======
+
+        // & :active {
+        //   background: #b1b1b1;
+        // }
+>>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
       }
     }
 
@@ -130,9 +146,11 @@
         padding: 0 8px;
         display: flex;
         align-items: center;
+
         ::placeholder {
           color: #c0ae68;
         }
+
         button {
           margin-left: 4px;
           @include rwd($xl) {
@@ -160,13 +178,15 @@
 
     .fc-toolbar {
       .fc-left {
-        div > button {
+        div>button {
           background: #c0ae68;
           border: #c0ae68;
         }
+
         .fc-today-button {
           background: #484848;
         }
+
         .fc-button:disabled {
           opacity: 1;
         }
@@ -190,12 +210,15 @@
             color: #b1b1b1;
             border: 1px solid #b1b1b1;
           }
+
           .fc-dayGridMonth-button {
             background-color: #e5e5e5;
           }
+
           .fc-timeGridWeek-button {
             background-color: #e5e5e5;
           }
+
           .fc-timeGridDay-button {
             background-color: #e5e5e5;
           }
@@ -217,6 +240,7 @@
       border: 1px solid transparent;
       cursor: pointer;
     }
+
     .isNotAllday {
       // background-color: inherit !important;
       padding: 0;
@@ -298,16 +322,19 @@
         .daterange {
           margin-top: 16px;
           width: 100%;
+
           &__date {
             width: 100%;
           }
         }
       }
+
       &__footer {
         .dialog-footer {
           .el-button--primary {
             background: #c0ae68;
             color: #ffffff;
+
             a {
               background: #c0ae68;
               color: #ffffff;
@@ -317,21 +344,25 @@
       }
     }
   }
+
   .el-dialog__title {
     color: #000000;
     font-weight: 700;
   }
+
   .dialog {
-    margin-top: 40px;
+    // margin-top: 40px;
     font-family: "Heiti TC Light", "Microsoft JhengHei", "微軟正黑體",
       "Microsoft Sans Serif", "Helvetica", "Times New Roman", "Myriad", Arial;
     color: #000000;
+
     h4 {
       border-bottom: 1px solid #e7e7e7;
       padding: 0 0 10px 0;
       margin: 20px 0 20px 0;
       font-size: 18px;
     }
+
     p {
       font-size: 16px;
       line-height: 28px;
@@ -353,12 +384,20 @@
   //   }
 
   .share {
-    float: right;
-    margin-bottom: 8px;
-    margin-right: 8px;
-    img {
-      width: 40px;
-      height: 40px;
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+
+    i {
+      font-size: 36px;
+      transition: .4s;
+      cursor: pointer;
+
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 }
