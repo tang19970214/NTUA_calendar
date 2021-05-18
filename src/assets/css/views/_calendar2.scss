@@ -8,21 +8,58 @@
     height: 80px;
     display: flex;
     align-items: center;
+    @include rwd($lg) {
+      height: calc(100vh - 100px);
+      position: absolute;
+      z-index: 2;
+      top: 0;
+      margin-top: 100px;
+      width: 375px;
+      align-items: flex-start;
+      flex-direction: column;
+      box-shadow: 5px 5px 5px #888888;
+      transition: 0.3s;
+      transform: translateX(-390px);
+      margin-left: 0px;
+    }
 
+    &.showMenu {
+      transform: translateX(0);
+    }
+    // 整包標籤
     &__tag {
       display: flex;
       align-items: center;
       justify-content: flex-start;
-
+      @include rwd($lg) {
+        flex-direction: column;
+        margin: 8px;
+      }
+      // 個別標籤
       label {
         margin-right: 8px;
         color: #ffffff;
+
+        // 個別標籤樣式
+        @include rwd($lg) {
+          margin: 8px;
+          width: 200px;
+        }
+
+        // 第一個標籤樣式
         &:first-child {
           margin-left: 8px;
+          @include rwd($lg) {
+            margin: 0;
+          }
         }
+
+        // 最後一個標籤樣式
         &:last-child {
           margin-right: 0;
         }
+
+        // 隱藏勾
         .typeCheckBox {
           display: none;
         }
@@ -31,7 +68,10 @@
           border-radius: 4px;
           padding: 8px 16px;
           cursor: pointer;
-          @include rwd($lg) {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          @include rwd($xl) {
             justify-content: flex-start;
             font-size: 14px;
           }
@@ -47,15 +87,15 @@
               display: none;
               font-size: 14px;
               margin-left: 0.5rem;
-              display: none;
               color: rgba(255, 255, 255, 0.6);
               transition: 0.5s;
             }
           }
+          .cross {
+            margin-left: 0.5rem;
+            display: block;
+          }
         }
-        // & :active {
-        //   background: #b1b1b1;
-        // }
       }
     }
 
