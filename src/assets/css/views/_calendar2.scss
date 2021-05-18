@@ -127,10 +127,9 @@
       }
 
       &--keyword {
-        padding: 0 8px;
         display: flex;
         align-items: center;
-
+        margin: 0 8px;
         ::placeholder {
           color: #c0ae68;
         }
@@ -355,17 +354,6 @@
       text-align: justify;
     }
   }
-
-  //   .item {
-  //     float: right;
-  //     margin-bottom: 40px;
-  //     .share-button {
-  //       display: flex;
-  //       justify-content: end;
-  //       font-size: 40px;
-  //       border: 0px;
-  //     }
-  //   }
 
   .share {
     width: 100%;
