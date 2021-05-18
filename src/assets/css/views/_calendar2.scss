@@ -40,7 +40,6 @@
         margin-right: 8px;
         color: #ffffff;
 
-<<<<<<< HEAD
         // 個別標籤樣式
         @include rwd($lg) {
           margin: 8px;
@@ -48,8 +47,6 @@
         }
 
         // 第一個標籤樣式
-=======
->>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
         &:first-child {
           margin-left: 8px;
           @include rwd($lg) {
@@ -57,10 +54,7 @@
           }
         }
 
-<<<<<<< HEAD
         // 最後一個標籤樣式
-=======
->>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
         &:last-child {
           margin-right: 0;
           @include rwd($lg) {
@@ -68,10 +62,7 @@
           }
         }
 
-<<<<<<< HEAD
         // 隱藏勾
-=======
->>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
         .typeCheckBox {
           display: none;
         }
@@ -108,13 +99,6 @@
             display: block;
           }
         }
-<<<<<<< HEAD
-=======
-
-        // & :active {
-        //   background: #b1b1b1;
-        // }
->>>>>>> d57e595254d2bf7ed2ba26fe20da425ab339de14
       }
     }
 
@@ -178,7 +162,7 @@
 
     .fc-toolbar {
       .fc-left {
-        div>button {
+        div > button {
           background: #c0ae68;
           border: #c0ae68;
         }
@@ -392,7 +376,7 @@
 
     i {
       font-size: 36px;
-      transition: .4s;
+      transition: 0.4s;
       cursor: pointer;
 
       &:hover {
