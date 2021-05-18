@@ -73,7 +73,10 @@
               class="el-input__icon el-icon-search"
             ></i>
           </el-input>
-          <el-button @click="exportDialogVisible = true" type="primary"
+          <el-button
+            @click="exportDialogVisible = true"
+            type="primary"
+            class="filterBox__type--keyword-exceloutput"
             >匯出Excel</el-button
           >
           <el-button

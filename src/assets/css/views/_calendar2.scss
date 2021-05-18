@@ -106,13 +106,24 @@
       margin-left: auto;
       display: flex;
       align-items: center;
+      @include rwd($lg) {
+        flex-direction: column;
+        align-items: flex-start;
+        margin: 8px;
+      }
 
       &--unit {
         padding: 0 8px;
+        @include rwd($lg) {
+          margin-bottom: 4px;
+        }
       }
 
       &--local {
         padding: 0 8px;
+        @include rwd($lg) {
+          margin-bottom: 4px;
+        }
       }
 
       &--keyword {
@@ -124,6 +135,15 @@
         }
         button {
           margin-left: 4px;
+          @include rwd($lg) {
+            display: block;
+            margin: 0.75rem;
+            box-sizing: border-box;
+            width: 100%;
+          }
+        }
+        @include rwd($lg) {
+          flex-direction: column;
         }
       }
     }
