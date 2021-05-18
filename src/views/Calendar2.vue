@@ -648,7 +648,7 @@ export default {
     copyHref(id) {
       console.log(id);
       const insid = document.createElement("input");
-      insid.value = "Id=" + id; //賦值
+      insid.value = "Id = " + id; //賦值
       document.body.appendChild(insid);
       insid.select(); // 選擇物件
       document.execCommand("Copy"); // 執行瀏覽器複製命令
