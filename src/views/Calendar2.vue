@@ -647,7 +647,12 @@ export default {
     /* 複製連結鈕 */
     copyHref(id) {
       console.log(id);
-      this.$router.push({ name: "Detail", query: { id: id } });
+      const oInput = document.createElement("input");
+      oInput.value = id; //賦值
+      document.body.appendChild(oInput);
+      oInput.select(); // 選擇物件
+      document.execCommand("Copy"); // 執行瀏覽器複製命令
+      // this.$router.push({ name: "Detail", query: { id: id } });
     },
   },
   async mounted() {
