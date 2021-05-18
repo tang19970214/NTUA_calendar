@@ -140,22 +140,7 @@
             <i class="el-icon-share"></i>
           </el-tooltip>
         </a>
-        <!-- <span>
-          <a href="::javascript" id="copybodylink" @click.prevent="copyDialog()">
-            <img src="../assets/images/share.png" alt="" />
-          </a>
-        </span> -->
       </div>
-      <!--       
-        <el-badge class="item">
-          <el-button
-            class="share-button"
-            icon="el-icon-share"
-            type="Info"
-            @click="copyDialog"
-          ></el-button>
-        </el-badge>
-       -->
 
       <!-- 所有內容 -->
       <div class="dialog">

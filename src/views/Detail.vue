@@ -1,6 +1,52 @@
 <template>
   <div class="detailPage">
-    {{detailList}}
+    <div class="detailPage__title">
+      <h4>{{ detailList.title }}</h4>
+    </div>
+
+    <div class="detailPage__image">
+      <img :src="detailList.pics" :alt="detailList.pics" />
+    </div>
+    <!-- 整頁複製鈕 -->
+    <div class="share" v-if="!!detailList.insId">
+      <a @click="copyHref(detailList.insId)">
+        <el-tooltip
+          class="item"
+          effect="dark"
+          content="複製連結"
+          placement="bottom"
+        >
+          <i class="el-icon-share"></i>
+        </el-tooltip>
+      </a>
+    </div>
+
+    <div class="detailPage__summary">
+      <h4>主題 ：</h4>
+      <p>{{ detailList.summary }}</p>
+    </div>
+
+    <div class="detailPage__contents">
+      <h4>活動內容 ：</h4>
+      <p>{{ detailList.contents }}</p>
+    </div>
+
+    <div class="detailPage__links">
+      <h4>相關連結 ：</h4>
+      <a :href="detailList.links" target="_blank" class="dialog__links"
+        >{{ detailList.links }}
+      </a>
+    </div>
+
+    <div class="detailPage__activDate">
+      <h4>活動時間 ：</h4>
+      <p>{{ detailList.activDate }}</p>
+    </div>
+
+    <div class="detailPage__activLocation">
+      <h4>活動地點 ：</h4>
+      <p>{{ detailList.activLocation }}</p>
+    </div>
   </div>
 </template>
 
