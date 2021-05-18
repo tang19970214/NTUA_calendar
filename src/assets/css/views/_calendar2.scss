@@ -57,6 +57,9 @@
         // 最後一個標籤樣式
         &:last-child {
           margin-right: 0;
+          @include rwd($lg) {
+            margin-left: 0;
+          }
         }
 
         // 隱藏勾
