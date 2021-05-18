@@ -178,6 +178,9 @@
           font-family: Roboto;
           font-weight: 500;
           font-size: 28px;
+          @include rwd($sm) {
+            font-size: 12px;
+          }
         }
       }
 
@@ -201,6 +204,11 @@
             background-color: #484848;
             color: #ffffff;
           }
+        }
+      }
+      .fc-button-primary {
+        @include rwd($sm) {
+          font-size: 12px;
         }
       }
     }
