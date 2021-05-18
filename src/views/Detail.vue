@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="detailPage">
     {{detailList}}
   </div>
 </template>
@@ -26,3 +26,8 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.detailPage {
+}
+</style>
