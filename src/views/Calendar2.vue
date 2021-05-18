@@ -76,7 +76,7 @@
           <el-button
             @click="exportDialogVisible = true"
             type="primary"
-            class="filterBox__type--keyword-exceloutput"
+            class="filterBox__type--keyword"
             >匯出Excel</el-button
           >
           <el-button
