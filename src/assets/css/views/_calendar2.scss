@@ -32,7 +32,7 @@
       align-items: center;
       justify-content: flex-start;
       @include rwd($lg) {
-        flex-direction: column;
+        flex-wrap: wrap;
         margin: 8px;
       }
       // 個別標籤
@@ -43,23 +43,17 @@
         // 個別標籤樣式
         @include rwd($lg) {
           margin: 8px;
-          width: 200px;
+          display: flex;
         }
 
         // 第一個標籤樣式
         &:first-child {
           margin-left: 8px;
-          @include rwd($lg) {
-            margin: 0;
-          }
         }
 
         // 最後一個標籤樣式
         &:last-child {
           margin-right: 0;
-          @include rwd($lg) {
-            margin-left: 0;
-          }
         }
 
         // 隱藏勾
@@ -75,7 +69,6 @@
           justify-content: center;
           align-items: center;
           @include rwd($xl) {
-            justify-content: flex-start;
             font-size: 14px;
           }
 
@@ -110,12 +103,19 @@
         flex-direction: column;
         align-items: flex-start;
         margin: 8px;
+        width: 340px;
+        // width: 100%;
       }
 
       &--unit {
         padding: 0 8px;
         @include rwd($lg) {
           margin-bottom: 4px;
+          width: 100%;
+        }
+        .el-select {
+          display: block;
+          width: 100%;
         }
       }
 
@@ -123,6 +123,11 @@
         padding: 0 8px;
         @include rwd($lg) {
           margin-bottom: 4px;
+          width: 100%;
+        }
+        .el-select {
+          display: block;
+          width: 100%;
         }
       }
 
@@ -147,6 +152,7 @@
           padding: 8px 0;
           margin-left: 8px;
           flex-direction: column;
+          width: 100%;
         }
       }
     }
