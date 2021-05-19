@@ -96,6 +96,7 @@
     allDaySlot：確定“全天”廣告位是否顯示在日曆的頂部。 -->
     <div id="fullCalendar">
       <FullCalendar
+        style="width:85%"
         v-if="calendarEvents"
         locale="zh-tw"
         defaultView="dayGridMonth"
