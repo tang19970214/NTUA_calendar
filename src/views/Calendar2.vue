@@ -400,19 +400,19 @@ export default {
       let colorStr = "";
       switch (typeName) {
         case "行政":
-          colorStr = "#EE6B6B";
+          colorStr = "#c3808f";
           break;
         case "展覽":
-          colorStr = "#E28F15";
+          colorStr = "#77c7ee";
           break;
         case "表演":
-          colorStr = "#B600F5";
+          colorStr = "#7fc8b5";
           break;
         case "播映":
-          colorStr = "#9C2626";
+          colorStr = "#d39fc7";
           break;
         case "學術":
-          colorStr = "#2093D3";
+          colorStr = "#e5976c";
           break;
       }
       // console.log("colorStr", colorStr)
