@@ -8,7 +8,6 @@ export default new Vuex.Store({
     token: "",
     tokenExpire: "",
     isLoading: false,
-<<<<<<< HEAD
     tagGroup: [{
       id: 1,
       typeName: "行政",
@@ -205,35 +204,6 @@ export default new Vuex.Store({
         color: '#0072c6'
       }
     ]
-=======
-    tagGroup: [
-      {
-        id: 1,
-        typeName: "行政",
-        color: "#c3808f",
-      },
-      {
-        id: 2,
-        typeName: "展覽",
-        color: "#77c7ee",
-      },
-      {
-        id: 3,
-        typeName: "表演",
-        color: "#7fc8b5",
-      },
-      {
-        id: 4,
-        typeName: "播映",
-        color: "#d39fc7",
-      },
-      {
-        id: 5,
-        typeName: "學術",
-        color: "#e5976c",
-      },
-    ],
->>>>>>> 28b16033b76c071d1d72f2dc8d2bf119bad59053
   },
   actions: {
     //loading
