@@ -1,34 +1,69 @@
 <template>
   <div class="shareGroupPage">
-    <!-- <div class="shareGroupPage__block" v-for="item in shareList" :key="item.id">
-      {{ item.title }}
-    </div> -->
-
+    <!-- 側邊欄 -->
     <div v-for="item in networks" :key="item.network">
-      <ShareNetwork class="shareGroupPage__block" :style="{ backgroundColor: item.color }" :network="item.network" :url="sharing.url" :title="sharing.title" :description="sharing.description" :quote="sharing.quote" :hashtags="sharing.hashtags" :twitterUser="sharing.twitterUser" v-if="item.name !== 'more'">
+      <ShareNetwork
+        class="shareGroupPage__block"
+        :style="{ backgroundColor: item.color }"
+        :network="item.network"
+        :url="sharing.url"
+        :title="sharing.title"
+        :description="sharing.description"
+        :quote="sharing.quote"
+        :hashtags="sharing.hashtags"
+        :twitterUser="sharing.twitterUser"
+        v-if="item.name !== 'more'"
+      >
         <i :class="item.icon"></i>
       </ShareNetwork>
 
-      <div class="shareGroupPage__block" :style="{ backgroundColor: item.color }" @click="shareModal = true" v-else>
+      <!-- 點擊顯示所有 -->
+      <div
+        class="shareGroupPage__block"
+        :style="{ backgroundColor: item.color }"
+        @click="shareModal = true"
+        v-else
+      >
         <a>
-          <i :class="item.icon"></i>
+          <img
+            src="../assets/images/othericon.png"
+            alt="othericon"
+            width="30px"
+          />
+          <!-- <i :class="item.icon"></i> -->
         </a>
       </div>
     </div>
 
+    <!-- 所有分享方式 -->
     <el-dialog title="所有分享方式" :visible.sync="shareModal" width="40%">
       <div class="shareGroupPage__modal">
-        <el-input v-model="shareList.keyword"></el-input>
+        <!-- <el-input v-model="shareList.keyword"></el-input> -->
 
-        <div class="shareGroupPage__modal--shareMethod">
-          <ShareNetwork v-for="item in allShareMethod" :key="item.network" class="shareGroupPage__block" :style="{ backgroundColor: item.color }" :network="item.network" :url="sharing.url" :title="sharing.title" :description="sharing.description" :quote="sharing.quote" :hashtags="sharing.hashtags" :twitterUser="sharing.twitterUser">
+        <div class="shareGroupPage__modal--shareMethod" id="dialog__tag">
+          <ShareNetwork
+            id="shareGroupPage__tag"
+            v-for="item in allShareMethod"
+            :key="item.network"
+            class="shareGroupPage__block"
+            :style="{ backgroundColor: item.color }"
+            :network="item.network"
+            :url="sharing.url"
+            :title="sharing.title"
+            :description="sharing.description"
+            :quote="sharing.quote"
+            :hashtags="sharing.hashtags"
+            :twitterUser="sharing.twitterUser"
+          >
             <i :class="item.icon"></i>
-            <span>{{ item.name }}</span>
+            <span class="shareGroupPage__tag--name">{{ item.name }}</span>
           </ShareNetwork>
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="shareModal = false">關閉</el-button>
+        <el-button @click="shareModal = false" type="danger" plain
+          >關閉</el-button
+        >
       </span>
     </el-dialog>
   </div>
@@ -76,7 +111,7 @@ export default {
           color: "#333333",
         },
         {
-          network: "more",
+          network: "email",
           name: "more",
           icon: "far fah fa-lg fa-envelope",
           color: "#45a147",
@@ -150,6 +185,46 @@ export default {
         span {
           padding-left: 8px;
           white-space: nowrap;
+        }
+      }
+    }
+    #dialog__tag {
+      .share-network {
+        &-baidu,
+        &-buffer,
+        &-evernote,
+        &-flipboard,
+        &-hackernews,
+        &-instapaper,
+        &-line,
+        &-linkedin,
+        &-messenger,
+        &-odnoklassniki,
+        &-pocket,
+        &-quora,
+        &-reddit,
+        &-skype,
+        &-sms,
+        &-stumbleupon,
+        &-telegram,
+        &-tumblr,
+        &-viber,
+        &-vk,
+        &-weibo,
+        &-whatsapp,
+        &-wordpress,
+        &-xing,
+        &-yammer {
+          width: 150px;
+          background-color: transparent;
+          margin: 4px;
+        }
+
+        &-facebook,
+        &-twitter,
+        &-pinterest,
+        &-email {
+          display: none;
         }
       }
     }
