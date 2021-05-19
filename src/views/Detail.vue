@@ -1,5 +1,7 @@
 <template>
   <div class="detailPage">
+    <ShareGroup />
+
     <div class="detailPage__title">
       <h4>{{ detailList.title }}</h4>
     </div>
@@ -47,17 +49,39 @@
       <h4>活動地點 ：</h4>
       <p>{{ detailList.activLocation }}</p>
     </div>
+
+    <!-- 回到頂部 -->
+    <el-backtop :visibility-height="550">
+      <div class="backTop">
+        <i class="el-icon-arrow-up upIcon"></i>
+        <!-- <i class="el-icon-caret-top upIcon"></i> -->
+      </div>
+    </el-backtop>
   </div>
 </template>
 
 <script>
+import ShareGroup from "../components/shareGroup.vue";
+
 export default {
+  components: { ShareGroup },
   data() {
     return {
       detailList: {},
     };
   },
   methods: {
+    copyHref(id) {
+      const insid = document.createElement("input");
+      insid.value = process.env.VUE_APP_LINK_URL + "/#/Detail?id=" + id; //賦值
+      document.body.appendChild(insid);
+      insid.select(); // 選擇物件
+      document.execCommand("Copy"); // 執行瀏覽器複製命令
+      this.$message({
+        message: "網址已複製",
+        type: "success",
+      });
+    },
     getCalendarDetail() {
       const idQuery = {
         insid: this.$route.query.id,
@@ -75,6 +99,7 @@ export default {
 
 <style lang="scss">
 .detailPage {
+  height: 100%;
   padding: 8px;
   line-height: 28px;
   margin-bottom: 8px;
@@ -100,6 +125,25 @@ export default {
       &:hover {
         transform: scale(1.2);
       }
+    }
+  }
+  .backTop {
+    height: 100%;
+    width: 100%;
+    background-color: #cccccc;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+    text-align: center;
+    line-height: 40px;
+    border-radius: 5px;
+    .upIcon {
+      font-family: "FontAwesome";
+      font-weight: 900;
+      font-size: 20px;
+    }
+    &:hover {
+      transition: 0.3s;
+      background: #0984e3;
+      color: #ffffff;
     }
   }
 }
