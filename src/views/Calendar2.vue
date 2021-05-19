@@ -96,6 +96,7 @@
     allDaySlot：確定“全天”廣告位是否顯示在日曆的頂部。 -->
     <div id="fullCalendar">
       <FullCalendar
+        style="width:85%"
         v-if="calendarEvents"
         locale="zh-tw"
         defaultView="dayGridMonth"
@@ -321,6 +322,7 @@ export default {
 
       // google calendar
       isLogInG: false,
+      dateG: "",
       startG: "",
       endG: "",
       titleG: "",
@@ -367,7 +369,6 @@ export default {
           // 判斷當天日期，沒有時間
           let a = moment(event.end).format("YYYY-MM-DD");
           let b = moment(event.start).format("YYYY-MM-DD");
-          // console.log(a, b)
           let c;
           c = a === b ? true : false;
           event.className = c ? "isNotAllday" : "";
@@ -375,53 +376,37 @@ export default {
           event.start = moment(event.start).format("YYYY-MM-DDTHH:mm:ss");
           return event;
         });
-        // console.log("arr", arr)
         this.calendarEvents = arr;
-
-        // push new data
-        // let newD = {
-        //   backgroundColor: "#00cec9",
-        //   cName: "行政",
-        //   className: "isNotAllday",
-        //   end: "2021-05-02T10:00:00",
-        //   id: "",
-        //   start: "2021-05-02T12:00:00",
-        //   title: "test--2",
-        // }
-        // this.calendarEvents.push(newD)
         this.$store.dispatch("loadingHandler", false);
       });
     },
 
     // get color
     getCalendarColor(typeName) {
-      // console.log(typeName)
       let colorStr = "";
       switch (typeName) {
         case "行政":
-          colorStr = "#EE6B6B";
+          colorStr = "#c3808f";
           break;
         case "展覽":
-          colorStr = "#E28F15";
+          colorStr = "#77c7ee";
           break;
         case "表演":
-          colorStr = "#B600F5";
+          colorStr = "#7fc8b5";
           break;
         case "播映":
-          colorStr = "#9C2626";
+          colorStr = "#d39fc7";
           break;
         case "學術":
-          colorStr = "#2093D3";
+          colorStr = "#e5976c";
           break;
       }
-      // console.log("colorStr", colorStr)
       return colorStr;
     },
 
     getEventType() {
       const vm = this;
       vm.eventTypeData = vm.$store.state.tagGroup;
-      // console.log(vm.eventTypeData)
       if (!vm.onlyActivity) {
         vm.typeCheckBox = vm.eventTypeData.map((item) => {
           return item.typeName;
@@ -439,13 +424,11 @@ export default {
       this.getEventData("", "", "", "");
     },
     searchHandler() {
-      // console.log("search");
       const vm = this;
       let unit = vm.listQuery.unit;
       let location = vm.listQuery.local;
       let startDate = vm.listQuery.startDate;
       let endDate = vm.listQuery.endDate;
-      // let key = vm.searchInput
       vm.getEventData({ unit, location, startDate, endDate });
     },
     checkIncludes(type) {
@@ -457,7 +440,7 @@ export default {
         //已登入則設定參數並執行 post()
         vm.$swal({
           title: "新增提示",
-          text: `確認新增 ${vm.dialogEvent.EventName} 至Google行事曆?`,
+          text: `確認新增 ${vm.dialogEvent.title} 至Google行事曆?`,
           icon: "warning",
           showCancelButton: true,
           confirmButtonColor: "#2f3e52",
@@ -466,10 +449,13 @@ export default {
           cancelButtonText: "取消",
         }).then((result) => {
           if (result.value) {
+            let splitDate = vm.dialogEvent.activDate.split("~");
             vm.$store.dispatch("loadingHandler", true);
-            vm.startG = moment(vm.dialogEvent.EventStartDate).format();
-            vm.endG = moment(vm.dialogEvent.EventEndDate).format();
-            vm.titleG = vm.dialogEvent.EventName;
+            vm.startG = moment(splitDate[0]).format(
+              "YYYY-MM-DDTHH:mm:ss+08:00"
+            );
+            vm.endG = moment(splitDate[1]).format("YYYY-MM-DDTHH:mm:ss+08:00");
+            vm.titleG = vm.dialogEvent.title;
             vm.postGoogleCalendar();
           } else {
             vm.$store.dispatch("loadingHandler", false);
@@ -524,7 +510,7 @@ export default {
             vm.$store.dispatch("loadingHandler", false);
             vm.$alertT.fire({
               icon: "success",
-              title: `已新增 ${vm.dialogEvent.EventName} 至Google行事曆`,
+              title: `已新增 ${vm.dialogEvent.title} 至Google行事曆`,
             });
             vm.eventDailog = false;
           },
@@ -550,10 +536,8 @@ export default {
             vm.$store.dispatch("loadingHandler", false);
             vm.$alertM.fire({
               icon: "success",
-              title: "已成功登入Google帳號",
+              title: "已成功登入Google帳號，請重新添加！",
             });
-            // console.log("GAPI client loaded for API");
-            // console.log(gapi.client.hasOwnProperty("calendar"));
             vm.logInCheck();
           },
           function(err) {
@@ -565,13 +549,11 @@ export default {
       //檢查是否為登入狀態
       let check = gapi.hasOwnProperty("client");
       let check2 = gapi.client.hasOwnProperty("calendar");
-      // console.log(check2);
       check2 ? (this.isLogInG = true) : (this.isLogInG = false);
     },
     eventRender(info) {
       const vm = this;
       info.el.addEventListener("click", function() {
-        // console.log("info", info);
         let insid = info.event.id;
         if (insid == "") {
           vm.dialogEvent = {
@@ -588,7 +570,6 @@ export default {
         } else {
           let params = { insid };
           vm.$api.GetDetail(params).then((res) => {
-            // console.log("res", res);
             vm.dialogEvent = res.data;
             vm.$nextTick(() => {
               vm.eventDailog = true;
@@ -598,25 +579,18 @@ export default {
       });
     },
     datesRender(info) {
-      // console.log("info", info)
       const vm = this;
-      // let type = info.view.viewSpec.type
       let startDate = moment(info.view.activeStart).format("yyyy-MM-DD");
       let endDate = moment(info.view.activeEnd).format("yyyy-MM-DD");
-      // let key = vm.searchInput
       vm.listQuery.startDate = startDate;
       vm.listQuery.endDate = endDate;
       let unit = vm.listQuery.unit;
       let location = vm.listQuery.local;
-      // console.log(vm.startDate, vm.endDate, vm.getEventData)
       // 當頁日曆第一格顯示跟最後一個顯示
-      // console.log("startDate", vm.listQuery.startDate)
-      // console.log("endDate", vm.listQuery.endDate)
       vm.getEventData({ unit, location, startDate, endDate });
     },
     typeName(eid) {
       const vm = this;
-      // console.log("eventTypeData", eventTypeData)
       return vm.eventTypeData
         .map((event) => {
           return event.Id === eid ? event.typeName : "";
@@ -633,20 +607,17 @@ export default {
       const vm = this;
       await vm.$api.GetUnitListItem().then((res) => {
         vm.getUnitListItemData = res.data;
-        // console.log("getUnitListItemData", vm.getUnitListItemData)
       });
     },
     async getLocationListItemFun() {
       const vm = this;
       await vm.$api.GetLocationListItem().then((res) => {
         vm.getLocationListItemData = res.data;
-        // console.log("getLocationListItemData", vm.getLocationListItemData)
       });
     },
 
     /* 複製連結鈕 */
     copyHref(id) {
-      console.log(id);
       const insid = document.createElement("input");
       insid.value = process.env.VUE_APP_LINK_URL + "/#/Detail?id=" + id; //賦值
       document.body.appendChild(insid);
@@ -668,7 +639,6 @@ export default {
       gapi.auth2.init({
         client_id: process.env.VUE_APP_CLIENT_ID,
       });
-      // console.log(gapi.client.hasOwnProperty("calendar"));
     });
     const vm = this;
     vm.getEventType();
