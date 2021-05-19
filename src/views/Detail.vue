@@ -1,7 +1,6 @@
 <template>
   <div class="detailPage">
     <ShareGroup />
-
     <div class="detailPage__title">
       <h4>{{ detailList.title }}</h4>
     </div>
