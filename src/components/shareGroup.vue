@@ -16,56 +16,7 @@
       >
         <i :class="item.icon"></i>
       </ShareNetwork>
-
-      <!-- 點擊顯示所有 -->
-      <div
-        class="shareGroupPage__block"
-        :style="{ backgroundColor: item.color }"
-        @click="shareModal = true"
-        v-else
-      >
-        <a>
-          <img
-            src="../assets/images/othericon.png"
-            alt="othericon"
-            width="30px"
-          />
-          <!-- <i :class="item.icon"></i> -->
-        </a>
-      </div>
     </div>
-
-    <!-- 所有分享方式 -->
-    <el-dialog title="所有分享方式" :visible.sync="shareModal" width="40%">
-      <div class="shareGroupPage__modal">
-        <!-- <el-input v-model="shareList.keyword"></el-input> -->
-
-        <div class="shareGroupPage__modal--shareMethod" id="dialog__tag">
-          <ShareNetwork
-            id="shareGroupPage__tag"
-            v-for="item in allShareMethod"
-            :key="item.network"
-            class="shareGroupPage__block"
-            :style="{ backgroundColor: item.color }"
-            :network="item.network"
-            :url="sharing.url"
-            :title="sharing.title"
-            :description="sharing.description"
-            :quote="sharing.quote"
-            :hashtags="sharing.hashtags"
-            :twitterUser="sharing.twitterUser"
-          >
-            <i :class="item.icon"></i>
-            <span class="shareGroupPage__tag--name">{{ item.name }}</span>
-          </ShareNetwork>
-        </div>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="shareModal = false" type="danger" plain
-          >關閉</el-button
-        >
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -105,23 +56,18 @@ export default {
           color: "#bd081c",
         },
         {
+          network: "line",
+          name: "Line",
+          icon: "fab fah fa-lg fa-line",
+          color: "#00c300",
+        },
+        {
           network: "email",
           name: "Email",
           icon: "far fah fa-lg fa-envelope",
           color: "#333333",
         },
-        {
-          network: "email",
-          name: "more",
-          icon: "far fah fa-lg fa-envelope",
-          color: "#45a147",
-        },
       ],
-      // modal
-      shareModal: false,
-      shareList: {
-        keyword: "",
-      },
       allShareMethod: null,
     };
   },
@@ -185,47 +131,6 @@ export default {
         span {
           padding-left: 8px;
           white-space: nowrap;
-        }
-      }
-    }
-    #dialog__tag {
-      .share-network {
-        &-baidu,
-        &-buffer,
-        &-evernote,
-        &-flipboard,
-        &-hackernews,
-        &-instapaper,
-        &-line,
-        &-linkedin,
-        &-messenger,
-        &-odnoklassniki,
-        &-pocket,
-        &-quora,
-        &-reddit,
-        &-skype,
-        &-sms,
-        &-stumbleupon,
-        &-telegram,
-        &-tumblr,
-        &-viber,
-        &-vk,
-        &-weibo,
-        &-whatsapp,
-        &-wordpress,
-        &-xing,
-        &-yammer {
-          width: 150px;
-          background-color: transparent;
-          margin: 4px;
-        }
-
-        &-facebook,
-        &-twitter,
-        &-pinterest,
-        &-messenger,
-        &-email {
-          display: none;
         }
       }
     }
