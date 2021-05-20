@@ -223,6 +223,7 @@ export default {
         &-facebook,
         &-twitter,
         &-pinterest,
+        &-messenger,
         &-email {
           display: none;
         }
