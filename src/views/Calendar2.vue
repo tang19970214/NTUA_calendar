@@ -449,21 +449,13 @@ export default {
           cancelButtonText: "取消",
         }).then((result) => {
           if (result.value) {
-            console.log("vm.dialogEvent.activDate", vm.dialogEvent.activDate);
             let splitDate = vm.dialogEvent.activDate.split("~");
-            let splitStartG = moment(splitDate[0]).format(
-              "YYYY-MM-DDTHH:mm:ss+08:00"
-            );
-            let splitEndG = moment(splitDate[1]).format(
-              "YYYY-MM-DDTHH:mm:ss+08:00"
-            );
-            console.log("splitDate", splitDate);
-            console.log("splitStart", splitStartG);
-            console.log("splitEndG", splitEndG);
-            vm.startG = splitStartG;
-            vm.endG = splitEndG;
-            vm.titleG = vm.dialogEvent.title;
             vm.$store.dispatch("loadingHandler", true);
+            vm.startG = moment(splitDate[0]).format(
+              "YYYY-MM-DDTHH:mm:ss+08:00"
+            );
+            vm.endG = moment(splitDate[1]).format("YYYY-MM-DDTHH:mm:ss+08:00");
+            vm.titleG = vm.dialogEvent.title;
             vm.postGoogleCalendar();
           } else {
             vm.$store.dispatch("loadingHandler", false);
@@ -567,9 +559,9 @@ export default {
           vm.dialogEvent = {
             title: info.event.title,
             activDate:
-              moment(info.event.start).format("YYYY-MM-DD") +
-              " ～ " +
-              moment(info.event.end).format("YYYY-MM-DD"),
+              moment(info.event.start).format("YYYY-MM-DDTHH:mm:ss+08:00") +
+              "~" +
+              moment(info.event.end).format("YYYY-MM-DDTHH:mm:ss+08:00"),
           };
 
           vm.$nextTick(() => {
