@@ -12,27 +12,27 @@ export default new Vuex.Store({
       {
         id: 1,
         typeName: "行政",
-        color: "#EE6B6B",
+        color: "#c3808f",
       },
       {
         id: 2,
         typeName: "展覽",
-        color: "#E28F15",
+        color: "#77c7ee",
       },
       {
         id: 3,
         typeName: "表演",
-        color: "#B600F5",
+        color: "#7fc8b5",
       },
       {
         id: 4,
         typeName: "播映",
-        color: "#9C2626",
+        color: "#d39fc7",
       },
       {
         id: 5,
         typeName: "學術",
-        color: "#2093D3",
+        color: "#e5976c",
       },
     ],
   },
