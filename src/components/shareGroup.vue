@@ -2,20 +2,11 @@
   <div class="shareGroupPage">
     <!-- 側邊欄 -->
     <div v-for="item in networks" :key="item.network">
-      <ShareNetwork
-        class="shareGroupPage__block"
-        :style="{ backgroundColor: item.color }"
-        :network="item.network"
-        :url="sharing.url"
-        :title="sharing.title"
-        :description="sharing.description"
-        :quote="sharing.quote"
-        :hashtags="sharing.hashtags"
-        :twitterUser="sharing.twitterUser"
-        v-if="item.name !== 'more'"
-      >
-        <i :class="item.icon"></i>
-      </ShareNetwork>
+      <el-tooltip effect="dark" :content="item.name" placement="right">
+        <ShareNetwork class="shareGroupPage__block" :style="{ backgroundColor: item.color }" :network="item.network" :url="sharing.url" :title="sharing.title" v-if="item.name !== 'more'">
+          <i :class="item.icon"></i>
+        </ShareNetwork>
+      </el-tooltip>
     </div>
   </div>
 </template>
@@ -28,13 +19,7 @@ export default {
         url:
           /* process.env.VUE_APP_LINK_URL + */ "https://www.ntua.edu.tw/NTUACalendar/#" +
           this.$route.fullPath,
-        title:
-          "Say hi to Vite! A brand new, extremely fast development setup for Vue.",
-        description:
-          'This week, I’d like to introduce you to "Vite", which means "Fast". It’s a brand new development setup created by Evan You.',
-        quote: "The hot reload is so fast it's near instant. - Evan You",
-        hashtags: "vuejs,vite,javascript",
-        twitterUser: "youyuxi",
+        title: "台藝大行事曆管理系統",
       },
       networks: [
         {

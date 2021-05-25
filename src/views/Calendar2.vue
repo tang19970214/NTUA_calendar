@@ -5,18 +5,8 @@
       <div class="filterBox__tag">
         <template v-for="item in eventTypeData">
           <label :for="item.Id" :key="item.Id">
-            <input
-              class="typeCheckBox"
-              :value="item.typeName"
-              v-model="typeCheckBox"
-              type="checkbox"
-              :id="item.Id"
-            />
-            <span
-              :style="`background:${item.color}`"
-              :class="{ isNotActive: checkIncludes(item.typeName) }"
-              class="checkedType"
-            >
+            <input class="typeCheckBox" :value="item.typeName" v-model="typeCheckBox" type="checkbox" :id="item.Id" />
+            <span :style="`background:${item.color}`" :class="{ isNotActive: checkIncludes(item.typeName) }" class="checkedType">
               {{ item.typeName }}
               <i class="fas fa-times-circle cross"></i>
             </span>
@@ -27,64 +17,25 @@
       <div class="filterBox__type">
         <!-- 新增單位 -->
         <div class="filterBox__type--unit">
-          <el-select
-            v-model="listQuery.unit"
-            placeholder="請選擇單位"
-            @change="chooseUnit"
-            :clearable="true"
-          >
-            <el-option
-              v-for="item in getUnitListItemData"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+          <el-select v-model="listQuery.unit" placeholder="請選擇單位" @change="chooseUnit" :clearable="true">
+            <el-option v-for="item in getUnitListItemData" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </div>
         <!-- 新增地點 -->
         <div class="filterBox__type--local">
-          <el-select
-            v-model="listQuery.local"
-            placeholder="請選擇地點"
-            @change="chooseLocal"
-            :clearable="true"
-          >
-            <el-option
-              v-for="item in getLocationListItemData"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+          <el-select v-model="listQuery.local" placeholder="請選擇地點" @change="chooseLocal" :clearable="true">
+            <el-option v-for="item in getLocationListItemData" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </div>
         <!-- 搜尋欄 -->
         <div class="filterBox__type--keyword">
-          <el-input
-            @keydown.native.enter="searchHandler"
-            placeholder="請輸入關鍵字"
-            v-model="searchInput"
-            :clearable="true"
-          >
-            <i
-              @click="searchHandler"
-              slot="suffix"
-              class="el-input__icon el-icon-search"
-            ></i>
+          <el-input @keydown.native.enter="searchHandler" placeholder="請輸入關鍵字" v-model="searchInput" :clearable="true">
+            <i @click="searchHandler" slot="suffix" class="el-input__icon el-icon-search"></i>
           </el-input>
-          <el-button
-            @click="exportDialogVisible = true"
-            type="primary"
-            class="filterBox__type--keyword"
-            >匯出Excel</el-button
-          >
-          <el-button
-            @click="$router.push('/AdvancedSearch')"
-            type="primary"
-            v-if="isLogin"
-            >進階搜尋</el-button
-          >
+          <el-button @click="exportDialogVisible = true" type="primary" class="filterBox__type--keyword">匯出Excel</el-button>
+          <el-button @click="$router.push('/AdvancedSearch')" type="primary" v-if="isLogin">進階搜尋</el-button>
         </div>
       </div>
     </div>
@@ -95,49 +46,22 @@
     eventTimeFormat：確定將在每個事件上顯示的時間格式
     allDaySlot：確定“全天”廣告位是否顯示在日曆的頂部。 -->
     <div id="fullCalendar">
-      <FullCalendar
-        style="width:85%"
-        v-if="calendarEvents"
-        locale="zh-tw"
-        defaultView="dayGridMonth"
-        :plugins="calendarPlugins"
-        :weekends="true"
-        :eventLimit="true"
-        :events="eventFilter"
-        height="parent"
-        :eventTimeFormat="eventTimeFormat"
-        :allDaySlot="false"
-        ref="fullCalendar"
-        :allDayDefault="false"
-        @eventRender="this.eventRender"
-        @datesRender="this.datesRender"
-        :header="{
+      <FullCalendar style="width:85%" v-if="calendarEvents" locale="zh-tw" defaultView="dayGridMonth" :plugins="calendarPlugins" :weekends="true" :eventLimit="true" :events="eventFilter" height="parent" :eventTimeFormat="eventTimeFormat" :allDaySlot="false" ref="fullCalendar" :allDayDefault="false" @eventRender="this.eventRender" @datesRender="this.datesRender" :header="{
           left: 'prev,next today',
           center: 'title',
           right: 'dayGridMonth,timeGridWeek,timeGridDay',
-        }"
-      />
+        }" />
     </div>
 
     <!-- new dialog -->
-    <el-dialog
-      append-to-bodycustom-class="eventDailog"
-      :visible.sync="eventDailog"
-      :title="dialogEvent.title"
-      width="60%"
-    >
+    <el-dialog append-to-bodycustom-class="eventDailog" :visible.sync="eventDailog" :title="dialogEvent.title" width="60%">
       <div class="dialog__image" v-if="!!dialogEvent.pics">
         <img :src="dialogEvent.pics" :alt="dialogEvent.title" width="100%" />
       </div>
       <!-- 整頁複製鈕 -->
       <div class="share" v-if="!!dialogEvent.insId">
         <a @click="copyHref(dialogEvent.insId)">
-          <el-tooltip
-            class="item"
-            effect="dark"
-            content="複製連結"
-            placement="bottom"
-          >
+          <el-tooltip class="item" effect="dark" content="複製連結" placement="bottom">
             <i class="el-icon-share"></i>
           </el-tooltip>
         </a>
@@ -155,8 +79,7 @@
         </div>
         <div v-if="!!dialogEvent.links">
           <h4>相關連結 :</h4>
-          <a :href="dialogEvent.links" target="_blank" class="dialog__links"
-            >{{ dialogEvent.links }}
+          <a :href="dialogEvent.links" target="_blank" class="dialog__links">{{ dialogEvent.links }}
           </a>
         </div>
         <div v-if="!!dialogEvent.activDate">
@@ -170,41 +93,24 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button type="info" @click="eventDailog = false">取 消</el-button>
-        <el-button type="primary" @click="addToGoogleCalendar()"
-          >新增到GOOGLE行事曆</el-button
-        >
+        <el-button type="primary" @click="addToGoogleCalendar()">新增到GOOGLE行事曆</el-button>
       </span>
     </el-dialog>
 
     <!-- exportDailog -->
-    <el-dialog
-      class="exportDialog"
-      title="匯出提示"
-      :visible.sync="exportDialogVisible"
-      width="30%"
-    >
+    <el-dialog class="exportDialog" title="匯出提示" :visible.sync="exportDialogVisible" width="30%">
       <!-- <span>請選擇匯出類別</span> -->
       <el-row>
         <el-col :span="12">
           <el-select v-model="outExcelData.unit" placeholder="請選擇單位">
-            <el-option
-              v-for="item in getUnitListItemData"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+            <el-option v-for="item in getUnitListItemData" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-col>
 
         <el-col :span="12">
           <el-select v-model="outExcelData.local" placeholder="請選擇地點">
-            <el-option
-              v-for="item in getLocationListItemData"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value"
-            >
+            <el-option v-for="item in getLocationListItemData" :key="item.value" :label="item.label" :value="item.value">
             </el-option>
           </el-select>
         </el-col>
@@ -213,22 +119,14 @@
       <!-- 時間 -->
       <div class="daterange">
         <!-- <span class="demonstration">默认</span> -->
-        <el-date-picker
-          class="daterange__date"
-          v-model="daterange"
-          type="daterange"
-          range-separator="至"
-          start-placeholder="開始日期"
-          end-placeholder="結束日期"
-        >
+        <el-date-picker class="daterange__date" v-model="daterange" type="daterange" range-separator="至" start-placeholder="開始日期" end-placeholder="結束日期">
         </el-date-picker>
       </div>
 
       <span slot="footer" class="dialog-footer">
         <el-button @click="exportDialogVisible = false">取 消</el-button>
         <el-button type="primary">
-          <a
-            :href="
+          <a :href="
               'https://www.ntua.edu.tw/calendar/api/Events/OutExcel?location=' +
                 outExcelData.local +
                 '&unit=' +
@@ -237,9 +135,7 @@
                 setDateFormat(daterange[0]) +
                 '&endDate=' +
                 setDateFormat(daterange[1])
-            "
-            >確 定</a
-          >
+            ">確 定</a>
         </el-button>
       </span>
     </el-dialog>
@@ -276,12 +172,8 @@ export default {
       listQuery: {
         unit: "",
         local: "",
-        startDate: moment()
-          .startOf("month")
-          .format("YYYY-MM-DD"),
-        endDate: moment()
-          .endOf("month")
-          .format("YYYY-MM-DD"),
+        startDate: moment().startOf("month").format("YYYY-MM-DD"),
+        endDate: moment().endOf("month").format("YYYY-MM-DD"),
       },
       // export
       exportDialogVisible: false,
@@ -485,10 +377,11 @@ export default {
             "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events",
         })
         .then(
-          function() {
+          /* 這邊授權錯誤 */
+          function () {
             vm.loadClient();
           },
-          function(err) {
+          function (err) {
             console.error("Error signing in", err);
             vm.$store.dispatch("loadingHandler", false);
           }
@@ -506,7 +399,7 @@ export default {
           },
         })
         .then(
-          function(response) {
+          function (response) {
             vm.$store.dispatch("loadingHandler", false);
             vm.$alertT.fire({
               icon: "success",
@@ -514,7 +407,7 @@ export default {
             });
             vm.eventDailog = false;
           },
-          function(err) {
+          function (err) {
             vm.$alertT.fire({
               icon: "error",
               title: `發生錯誤`,
@@ -532,7 +425,7 @@ export default {
           "https://content.googleapis.com/discovery/v1/apis/calendar/v3/rest"
         )
         .then(
-          function() {
+          function () {
             vm.$store.dispatch("loadingHandler", false);
             vm.$alertM.fire({
               icon: "success",
@@ -540,7 +433,7 @@ export default {
             });
             vm.logInCheck();
           },
-          function(err) {
+          function (err) {
             console.error("Error loading GAPI client for API", err);
           }
         );
@@ -553,7 +446,7 @@ export default {
     },
     eventRender(info) {
       const vm = this;
-      info.el.addEventListener("click", function() {
+      info.el.addEventListener("click", function () {
         let insid = info.event.id;
         if (insid == "") {
           vm.dialogEvent = {
@@ -635,7 +528,7 @@ export default {
       this.onlyActivity = true;
     }
     this.$store.dispatch("loadingHandler", true);
-    await gapi.load("client:auth2", function() {
+    await gapi.load("client:auth2", function () {
       gapi.auth2.init({
         client_id: process.env.VUE_APP_CLIENT_ID,
       });
