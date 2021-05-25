@@ -102,6 +102,12 @@ export default {
   padding: 8px;
   line-height: 28px;
   margin-bottom: 8px;
+  &__image {
+    max-width: 640px;
+    img {
+      width: 100%;
+    }
+  }
   h4 {
     font-size: 18px;
     border-bottom: 1px solid #e7e7e7;
