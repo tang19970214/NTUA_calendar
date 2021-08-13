@@ -95,17 +95,17 @@ router.beforeEach((to, from, next) => {
     if (!store.state.token) {
       if (window.localStorage.Token) {
         store.commit("SAVE_TOKEN", window.localStorage.Token);
-        Vue.prototype.$api
-          .CheckTokenExpire({ token: store.state.token })
-          .then((res) => {
-            let flag = res.data.response;
-            if (flag) {
-              // console.log("token OOOO");
-            } else {
-              // console.log("token XXXXX");
-              toCalendar();
-            }
-          });
+        // Vue.prototype.$api
+        //   .CheckTokenExpire({ token: store.state.token })
+        //   .then((res) => {
+        //     let flag = res.data.response;
+        //     if (flag) {
+        //       // console.log("token OOOO");
+        //     } else {
+        //       // console.log("token XXXXX");
+        //       toCalendar();
+        //     }
+        //   });
       } else {
         console.log("LOCAL NO TOKEN");
       }

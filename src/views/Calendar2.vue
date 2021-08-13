@@ -257,6 +257,7 @@ export default {
         let arr = res.data.map((event) => {
           // 進入點：前端把後端回傳資料轉換成前端格式
           // 左邊自定義 ＝右邊資料回傳
+          event.textColor = "#000";
           event.backgroundColor = this.getCalendarColor(event.cName);
           // 判斷當天日期，沒有時間
           let a = moment(event.end).format("YYYY-MM-DD");
@@ -269,6 +270,7 @@ export default {
           return event;
         });
         this.calendarEvents = arr;
+        console.log(arr);
         this.$store.dispatch("loadingHandler", false);
       });
     },
@@ -278,19 +280,19 @@ export default {
       let colorStr = "";
       switch (typeName) {
         case "行政":
-          colorStr = "#c3808f";
+          colorStr = "#ffe1e8";
           break;
         case "展覽":
-          colorStr = "#77c7ee";
+          colorStr = "#cceeff";
           break;
         case "表演":
-          colorStr = "#7fc8b5";
+          colorStr = "#ddeddd";
           break;
         case "播映":
-          colorStr = "#d39fc7";
+          colorStr = "#e1daf5";
           break;
         case "學術":
-          colorStr = "#e5976c";
+          colorStr = "#ffd8c3";
           break;
       }
       return colorStr;
@@ -416,8 +418,8 @@ export default {
           }
         );
     },
+    // 設定api key 並登入
     loadClient() {
-      // 設定api key 並登入
       const vm = this;
       gapi.client.setApiKey(process.env.VUE_APP_API_KEY);
       return gapi.client
@@ -438,12 +440,13 @@ export default {
           }
         );
     },
+    //檢查是否為登入狀態
     logInCheck() {
-      //檢查是否為登入狀態
       let check = gapi.hasOwnProperty("client");
       let check2 = gapi.client.hasOwnProperty("calendar");
       check2 ? (this.isLogInG = true) : (this.isLogInG = false);
     },
+
     eventRender(info) {
       const vm = this;
       info.el.addEventListener("click", function () {

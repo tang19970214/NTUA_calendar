@@ -41,7 +41,7 @@ let instance = axios.create({
 // request 攔截
 instance.interceptors.request.use(
   (config) => {
-    const token = store.state.token;
+    const token = process.env.VUE_APP_ENV == "PRO" ? store.state.token : "";
     token && (config.headers.Authorization = `Bearer ${token}`);
     return config;
   },

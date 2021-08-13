@@ -1,12 +1,36 @@
 const path = require("path");
 const CKEditorWebpackPlugin = require("@ckeditor/ckeditor5-dev-webpack-plugin");
-const { styles } = require("@ckeditor/ckeditor5-dev-utils");
+const {
+  styles
+} = require("@ckeditor/ckeditor5-dev-utils");
 
 module.exports = {
   publicPath: "/NTUACalendar/",
   // The source of CKEditor is encapsulated in ES6 modules. By default, the code
   // from the node_modules directory is not transpiled, so you must explicitly tell
   // the CLI tools to transpile JavaScript files in all ckeditor5-* modules.
+
+  devServer: {
+    port: 8080, // 端口
+    overlay: {
+      warnings: true,
+      errors: false,
+    },
+    proxy: {
+      //設定代理
+      "/api": {
+        target: "https://www.ntua.edu.tw/calendar/api/", // 介面的域名
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          "^/api": "" //萬用字元
+        }
+      }
+    },
+  },
+  // https://www.ntua.edu.tw/calendar/api/Events/GetEvents?unit=&location=&startDate=2021-08-01&endDate=2021-09-12
+  // https://www.ntua.edu.tw/calendar/api/Events/GetEvents?unit=&location=&startDate=2021-08-01&endDate=2021-09-12
+
   transpileDependencies: ["*"],
 
   configureWebpack: {
