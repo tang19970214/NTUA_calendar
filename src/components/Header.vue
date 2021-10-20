@@ -2,11 +2,7 @@
   <div id="Header">
     <div class="headerContainer">
       <i @click="setShowMenu" class="fas fa-bars"></i>
-      <img
-        @click="$router.push('/Calendar')"
-        src="../assets/images/logo2.svg"
-        alt
-      />
+      <img style="cursor: pointer" @click="goNTUA()" src="../assets/images/logo2.svg" alt="國立臺灣藝術大學LOGO" />
       <!-- <div class="btnBox">
         <i :class="{ loginIcon: userName }" class="fas fa-user"></i>
         <p v-if="!userName" class="loginBox" @click="loginDialog = true">
@@ -198,10 +194,13 @@ export default {
     // 生成四位隨機驗證碼
     makeCode(o, l) {
       for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[
-          this.randomNum(0, this.identifyCodes.length)
-        ];
+        this.identifyCode +=
+          this.identifyCodes[this.randomNum(0, this.identifyCodes.length)];
       }
+    },
+
+    goNTUA() {
+      window.location.href = "https://www.ntua.edu.tw";
     },
   },
   mounted() {
