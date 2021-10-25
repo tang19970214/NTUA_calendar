@@ -3,6 +3,10 @@
     <div class="headerContainer">
       <i @click="setShowMenu" class="fas fa-bars"></i>
       <img style="cursor: pointer" @click="goNTUA()" src="../assets/images/logo2.svg" alt="國立臺灣藝術大學LOGO" />
+
+      <div class="headerContainer__link">
+        <a href="https://www.ntua.edu.tw/file/110%E8%A1%8C%E4%BA%8B%E6%9B%86.pdf" target="_blank">110行事曆</a>
+      </div>
       <!-- <div class="btnBox">
         <i :class="{ loginIcon: userName }" class="fas fa-user"></i>
         <p v-if="!userName" class="loginBox" @click="loginDialog = true">
@@ -210,4 +214,22 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scope>
+.headerContainer {
+  &__link {
+    margin-top: auto;
+    a {
+      color: white;
+      font-weight: bold;
+      letter-spacing: 0.2rem;
+      text-decoration: underline;
+      transition: all 0.3s;
+
+      &:hover {
+        background: white;
+        color: #484748;
+      }
+    }
+  }
+}
+</style>
