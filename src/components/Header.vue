@@ -6,7 +6,7 @@
 
       <div class="headerContainer__link">
         <a href="https://www.ntua.edu.tw/file/110%E8%A1%8C%E4%BA%8B%E6%9B%86.pdf" target="_blank">110行事曆</a>
-        <a href="https://www.ntua.edu.tw/file/111行事曆.pdf" target="_blank">110行事曆</a>
+        <a href="https://www.ntua.edu.tw/file/111行事曆.pdf" target="_blank">111行事曆</a>
       </div>
       <!-- <div class="btnBox">
         <i :class="{ loginIcon: userName }" class="fas fa-user"></i>
@@ -99,7 +99,9 @@ export default {
     },
     hasRole() {
       if (window.localStorage.getItem("user")) {
-        return JSON.parse(window.localStorage.getItem("user")).RoleNames[0] || false;
+        return (
+          JSON.parse(window.localStorage.getItem("user")).RoleNames[0] || false
+        );
       } else {
         return false;
       }
@@ -131,7 +133,9 @@ export default {
                 let token = res.data.token;
                 vm.$store.commit("SAVE_TOKEN", token);
                 let curTime = new Date();
-                let expiredate = new Date(curTime.setSeconds(curTime.getSeconds() + res.data.expires_in));
+                let expiredate = new Date(
+                  curTime.setSeconds(curTime.getSeconds() + res.data.expires_in)
+                );
                 vm.$store.commit("SAVE_TOKEN_EXPIRE", expiredate);
 
                 window.localStorage.refreshtime = expiredate;
@@ -195,7 +199,8 @@ export default {
     // 生成四位隨機驗證碼
     makeCode(o, l) {
       for (let i = 0; i < l; i++) {
-        this.identifyCode += this.identifyCodes[this.randomNum(0, this.identifyCodes.length)];
+        this.identifyCode +=
+          this.identifyCodes[this.randomNum(0, this.identifyCodes.length)];
       }
     },
 
